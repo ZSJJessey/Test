@@ -64,6 +64,17 @@ const LABELS: { id: MailLabel; name: string }[] = [
   { id: "垃圾箱", name: "垃圾箱" }
 ];
 
+function cn(...parts: Array<string | false | null | undefined>) {
+  return parts.filter(Boolean).join(" ");
+}
+
+function initials(name: string) {
+  const trimmed = name.trim();
+  if (!trimmed) return "?";
+  const first = Array.from(trimmed)[0] ?? "?";
+  return first.toUpperCase();
+}
+
 export function MailboxPage() {
   const [activeLabel, setActiveLabel] = useState<MailLabel>("收件箱");
   const [query, setQuery] = useState("");
@@ -109,11 +120,13 @@ export function MailboxPage() {
 
   return (
     <div className="min-h-dvh bg-slate-950 text-slate-100">
-      <header className="sticky top-0 z-10 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur">
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(1200px_600px_at_20%_-10%,rgba(56,189,248,0.14),transparent_60%),radial-gradient(900px_500px_at_110%_30%,rgba(251,191,36,0.10),transparent_55%),radial-gradient(900px_500px_at_40%_120%,rgba(244,63,94,0.10),transparent_55%)]" />
+
+      <header className="sticky top-0 z-10 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
-            <div className="grid size-9 place-items-center rounded-xl bg-slate-800/70 ring-1 ring-slate-700">
-              <span className="text-sm font-semibold">TM</span>
+            <div className="grid size-9 place-items-center rounded-xl bg-slate-900/60 ring-1 ring-slate-800 shadow-sm">
+              <span className="text-sm font-semibold tracking-wide">TM</span>
             </div>
             <div className="leading-tight">
               <div className="text-sm font-semibold">TestMail</div>
@@ -122,7 +135,7 @@ export function MailboxPage() {
           </div>
 
           <div className="ml-auto w-full max-w-md">
-            <div className="flex items-center gap-2 rounded-xl bg-slate-900/60 px-3 py-2 ring-1 ring-slate-800">
+            <div className="flex items-center gap-2 rounded-xl bg-slate-900/50 px-3 py-2 ring-1 ring-slate-800 shadow-sm focus-within:ring-slate-700">
               <span className="select-none text-slate-400">⌕</span>
               <input
                 value={query}
@@ -134,7 +147,7 @@ export function MailboxPage() {
                 <button
                   type="button"
                   onClick={() => setQuery("")}
-                  className="rounded-lg px-2 py-1 text-xs text-slate-300 hover:bg-slate-800/60"
+                  className="rounded-lg px-2 py-1 text-xs text-slate-200 hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-600/70"
                 >
                   清除
                 </button>
@@ -144,9 +157,9 @@ export function MailboxPage() {
         </div>
       </header>
 
-      <main className="mx-auto grid max-w-6xl grid-cols-12 gap-4 px-4 py-4">
-        <aside className="col-span-12 md:col-span-3">
-          <div className="rounded-2xl bg-slate-900/40 p-2 ring-1 ring-slate-800">
+      <main className="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-4 py-4 md:grid-cols-[240px_380px_1fr]">
+        <aside className="md:sticky md:top-[4.25rem] md:h-[calc(100dvh-5.25rem)]">
+          <div className="h-full rounded-2xl bg-slate-900/35 p-2 ring-1 ring-slate-800/80 shadow-sm">
             <div className="px-2 pb-2 pt-1 text-xs font-medium text-slate-400">邮箱</div>
             <nav className="space-y-1">
               {LABELS.map((l) => {
@@ -160,13 +173,25 @@ export function MailboxPage() {
                     key={l.id}
                     type="button"
                     onClick={() => setActiveLabel(l.id)}
-                    className={[
-                      "flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm",
-                      isActive ? "bg-slate-800/70 ring-1 ring-slate-700" : "hover:bg-slate-800/40"
-                    ].join(" ")}
+                    className={cn(
+                      "group flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm transition",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-600/70",
+                      isActive
+                        ? "bg-slate-800/55 ring-1 ring-slate-700/80"
+                        : "hover:bg-slate-800/35 ring-1 ring-transparent hover:ring-slate-800/80"
+                    )}
                   >
-                    <span className={isActive ? "font-semibold" : "text-slate-200"}>{l.name}</span>
-                    <span className="rounded-lg bg-slate-950/40 px-2 py-0.5 text-xs text-slate-400 ring-1 ring-slate-800">
+                    <span className={cn("flex items-center gap-2", isActive ? "font-semibold" : "text-slate-200")}>
+                      <span
+                        className={cn(
+                          "h-4 w-1 rounded-full bg-transparent transition",
+                          isActive ? "bg-sky-400/70" : "group-hover:bg-slate-700/60"
+                        )}
+                        aria-hidden="true"
+                      />
+                      {l.name}
+                    </span>
+                    <span className="rounded-lg bg-slate-950/35 px-2 py-0.5 text-xs text-slate-400 ring-1 ring-slate-800/80">
                       {count}
                     </span>
                   </button>
@@ -176,16 +201,23 @@ export function MailboxPage() {
           </div>
         </aside>
 
-        <section className="col-span-12 md:col-span-4">
-          <div className="rounded-2xl bg-slate-900/40 ring-1 ring-slate-800">
-            <div className="flex items-center justify-between gap-2 border-b border-slate-800 px-4 py-3">
-              <div className="text-sm font-semibold">{activeLabel === "已加星标" ? "星标" : activeLabel}</div>
+        <section className="md:h-[calc(100dvh-5.25rem)]">
+          <div className="h-full overflow-hidden rounded-2xl bg-slate-900/35 ring-1 ring-slate-800/80 shadow-sm">
+            <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 px-4 py-3">
+              <div className="flex items-center gap-2">
+                <div className="text-sm font-semibold">{activeLabel === "已加星标" ? "星标" : activeLabel}</div>
+                {query.trim() ? (
+                  <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-xs text-sky-200 ring-1 ring-sky-500/20">
+                    过滤中
+                  </span>
+                ) : null}
+              </div>
               <div className="text-xs text-slate-400">{filteredMails.length} 封</div>
             </div>
 
-            <div className="max-h-[calc(100dvh-12rem)] overflow-auto">
+            <div className="h-[min(60dvh,520px)] overflow-auto md:h-[calc(100%-3.25rem)]">
               {filteredMails.length ? (
-                <ul className="divide-y divide-slate-800">
+                <ul className="divide-y divide-slate-800/80">
                   {filteredMails.map((m) => {
                     const isActive = m.id === activeId;
                     return (
@@ -193,13 +225,27 @@ export function MailboxPage() {
                         <button
                           type="button"
                           onClick={() => openMail(m.id)}
-                          className={[
+                          className={cn(
                             "w-full px-4 py-3 text-left transition",
-                            isActive ? "bg-slate-800/60" : "hover:bg-slate-800/30"
-                          ].join(" ")}
+                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-600/70",
+                            isActive ? "bg-slate-800/45" : "hover:bg-slate-800/25"
+                          )}
                         >
                           <div className="flex items-start justify-between gap-3">
-                            <div className="min-w-0">
+                            <div className="flex min-w-0 items-start gap-3">
+                              <div
+                                className={cn(
+                                  "grid size-9 shrink-0 place-items-center rounded-xl ring-1 shadow-sm",
+                                  m.unread
+                                    ? "bg-sky-500/10 text-sky-200 ring-sky-500/25"
+                                    : "bg-slate-950/25 text-slate-200 ring-slate-800/80"
+                                )}
+                                aria-hidden="true"
+                              >
+                                <span className="text-sm font-semibold">{initials(m.fromName)}</span>
+                              </div>
+
+                              <div className="min-w-0">
                               <div className="flex items-center gap-2">
                                 <span className={m.unread ? "font-semibold" : "text-slate-200"}>{m.fromName}</span>
                                 {m.unread ? (
@@ -208,10 +254,16 @@ export function MailboxPage() {
                                   </span>
                                 ) : null}
                               </div>
-                              <div className={["mt-1 truncate text-sm", m.unread ? "font-semibold" : ""].join(" ")}>
+                              <div
+                                className={cn(
+                                  "mt-1 truncate text-sm",
+                                  m.unread ? "font-semibold text-slate-50" : "text-slate-100"
+                                )}
+                              >
                                 {m.subject}
                               </div>
                               <div className="mt-1 truncate text-xs text-slate-400">{m.preview}</div>
+                            </div>
                             </div>
                             <div className="flex shrink-0 flex-col items-end gap-2">
                               <div className="text-xs text-slate-400">{m.time}</div>
@@ -221,12 +273,13 @@ export function MailboxPage() {
                                   e.stopPropagation();
                                   toggleStar(m.id);
                                 }}
-                                className={[
+                                className={cn(
                                   "rounded-lg px-2 py-1 text-xs ring-1 transition",
+                                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-600/70",
                                   m.starred
-                                    ? "bg-amber-500/10 text-amber-300 ring-amber-500/30 hover:bg-amber-500/15"
-                                    : "bg-slate-950/30 text-slate-300 ring-slate-800 hover:bg-slate-800/40"
-                                ].join(" ")}
+                                    ? "bg-amber-500/10 text-amber-200 ring-amber-500/25 hover:bg-amber-500/15"
+                                    : "bg-slate-950/25 text-slate-200 ring-slate-800/80 hover:bg-slate-800/35"
+                                )}
                               >
                                 {m.starred ? "已星标" : "星标"}
                               </button>
@@ -244,14 +297,14 @@ export function MailboxPage() {
           </div>
         </section>
 
-        <section className="col-span-12 md:col-span-5">
-          <div className="rounded-2xl bg-slate-900/40 ring-1 ring-slate-800">
+        <section className="md:h-[calc(100dvh-5.25rem)]">
+          <div className="h-full overflow-hidden rounded-2xl bg-slate-900/35 ring-1 ring-slate-800/80 shadow-sm">
             {activeMail ? (
               <>
-                <div className="border-b border-slate-800 px-4 py-3">
+                <div className="border-b border-slate-800/80 bg-slate-950/10 px-4 py-3">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="truncate text-base font-semibold">{activeMail.subject}</div>
+                      <div className="truncate text-base font-semibold text-slate-50">{activeMail.subject}</div>
                       <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-400">
                         <span className="text-slate-200">{activeMail.fromName}</span>
                         <span>·</span>
@@ -264,19 +317,20 @@ export function MailboxPage() {
                       <button
                         type="button"
                         onClick={() => toggleStar(activeMail.id)}
-                        className={[
+                        className={cn(
                           "rounded-xl px-3 py-2 text-xs ring-1 transition",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-600/70",
                           activeMail.starred
-                            ? "bg-amber-500/10 text-amber-300 ring-amber-500/30 hover:bg-amber-500/15"
-                            : "bg-slate-950/30 text-slate-200 ring-slate-800 hover:bg-slate-800/40"
-                        ].join(" ")}
+                            ? "bg-amber-500/10 text-amber-200 ring-amber-500/25 hover:bg-amber-500/15"
+                            : "bg-slate-950/25 text-slate-100 ring-slate-800/80 hover:bg-slate-800/35"
+                        )}
                       >
                         {activeMail.starred ? "取消星标" : "设为星标"}
                       </button>
                       <button
                         type="button"
                         onClick={() => moveToTrash(activeMail.id)}
-                        className="rounded-xl bg-rose-500/10 px-3 py-2 text-xs text-rose-200 ring-1 ring-rose-500/25 transition hover:bg-rose-500/15"
+                        className="rounded-xl bg-rose-500/10 px-3 py-2 text-xs text-rose-100 ring-1 ring-rose-500/20 transition hover:bg-rose-500/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/40"
                       >
                         删除
                       </button>
@@ -284,10 +338,12 @@ export function MailboxPage() {
                   </div>
                 </div>
 
-                <div className="px-4 py-4">
-                  <pre className="whitespace-pre-wrap break-words text-sm leading-6 text-slate-100">
-                    {activeMail.content}
-                  </pre>
+                <div className="h-[min(60dvh,520px)] overflow-auto px-4 py-4 md:h-[calc(100%-3.75rem)]">
+                  <div className="rounded-2xl bg-slate-950/15 p-4 ring-1 ring-slate-800/70">
+                    <pre className="whitespace-pre-wrap break-words text-sm leading-6 text-slate-100">
+                      {activeMail.content}
+                    </pre>
+                  </div>
                 </div>
               </>
             ) : (
