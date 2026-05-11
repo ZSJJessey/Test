@@ -1,5 +1,6 @@
 /.cursor
 /node_modules
+/TestMail/node_modules
 /dist
 /.vite
 .DS_Store
