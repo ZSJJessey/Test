@@ -16,6 +16,15 @@
         </div>
         <button id="restartBtn" type="button">重新开始</button>
       </div>
+      <label class="mode-label">
+        模式：
+        <select id="modeSelect">
+          <option value="classic">经典模式</option>
+          <option value="wrap">穿墙模式</option>
+          <option value="obstacle">障碍模式</option>
+          <option value="hard">地狱模式</option>
+        </select>
+      </label>
       <label class="wrap-label">
         <input type="checkbox" id="wrapWall" />
         穿墙模式
@@ -31,7 +40,11 @@
         </div>
       </div>
       <p class="tips">方向键 / WASD 移动，空格暂停；手机在画布上滑动转向</p>
-<p id="status" class="status"></p>
+      <p id="status" class="status"></p>
+      <section class="rank-box" aria-label="排行榜">
+        <h3>本地排行榜 Top 10</h3>
+        <ol id="rankList"></ol>
+      </section>
     </main>
     <script src="script.js"></script>
   </body>

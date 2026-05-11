@@ -2,6 +2,8 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const scoreEl = document.getElementById("score");
 const highScoreEl = document.getElementById("highScore");
+const rankListEl = document.getElementById("rankList");
+const modeSelectEl = document.getElementById("modeSelect");
 const statusEl = document.getElementById("status");
 const restartBtn = document.getElementById("restartBtn");
 const wrapWallEl = document.getElementById("wrapWall");
@@ -10,31 +12,34 @@ const overlayTitle = document.getElementById("overlayTitle");
 const overlayMessage = document.getElementById("overlayMessage");
 const overlayBtn = document.getElementById("overlayBtn");
 
-const gridCount = 20;
-const tileSize = canvas.width / gridCount;
-const BASE_TICK_MS = 171;
-const MIN_TICK_MS = 95;
-const SPEED_TIER_EVERY = 6;
-const SPEED_DROP_MS = 6;
-const OBSTACLE_COUNT = 6;
-const SWIPE_MIN_PX = 32;
-const HIGH_SCORE_KEY = "snake-high-score";
+const CONFIG = {
+  gridCount: 20,
+  swipeMinPx: 32,
+  highScoreKey: "snake-high-score",
+  rankKey: "snake-rank-top10",
+  modes: {
+    classic: { baseTickMs: 170, minTickMs: 95, speedTierEvery: 6, speedDropMs: 6, obstacleCount: 0, wrapWall: false },
+    wrap: { baseTickMs: 170, minTickMs: 95, speedTierEvery: 6, speedDropMs: 6, obstacleCount: 0, wrapWall: true },
+    obstacle: { baseTickMs: 171, minTickMs: 95, speedTierEvery: 6, speedDropMs: 6, obstacleCount: 6, wrapWall: false },
+    hard: { baseTickMs: 140, minTickMs: 80, speedTierEvery: 5, speedDropMs: 8, obstacleCount: 10, wrapWall: false }
+  }
+};
+
+const tileSize = canvas.width / CONFIG.gridCount;
 
 let snake;
 let direction;
 let queuedDirection;
 let food;
 let score;
-let gameOver;
-let paused;
-let started;
-let wrapWall;
 let obstacles;
 let timerId;
 let touchStart;
 let audioCtx;
-
+let gameState = "idle";
 let highScore = 0;
+let rankEntries = [];
+let modeConfig = CONFIG.modes.classic;
 
 function randomInt(max) {
   return Math.floor(Math.random() * max);
@@ -44,19 +49,84 @@ function positionsEqual(a, b) {
   return a.x === b.x && a.y === b.y;
 }
 
+function setState(nextState) {
+  gameState = nextState;
+}
+
+function isRunning() {
+  return gameState === "running";
+}
+
 function loadHighScore() {
-  const raw = localStorage.getItem(HIGH_SCORE_KEY);
+  const raw = localStorage.getItem(CONFIG.highScoreKey);
   const n = raw == null ? 0 : parseInt(raw, 10);
   return Number.isFinite(n) ? Math.max(0, n) : 0;
 }
 
 function persistHighScore() {
-  localStorage.setItem(HIGH_SCORE_KEY, String(highScore));
+  localStorage.setItem(CONFIG.highScoreKey, String(highScore));
+}
+
+function loadRankEntries() {
+  const raw = localStorage.getItem(CONFIG.rankKey);
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((item) => Number.isFinite(item.score)).slice(0, 10);
+  } catch {
+    return [];
+  }
+}
+
+function persistRankEntries() {
+  localStorage.setItem(CONFIG.rankKey, JSON.stringify(rankEntries));
+}
+
+function formatDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function updateRankList() {
+  rankListEl.innerHTML = "";
+  if (rankEntries.length === 0) {
+    const emptyItem = document.createElement("li");
+    emptyItem.className = "empty";
+    emptyItem.textContent = "暂无记录，开始你的第一局吧。";
+    rankListEl.appendChild(emptyItem);
+    return;
+  }
+
+  rankEntries.forEach((entry) => {
+    const item = document.createElement("li");
+    item.textContent = `${entry.score} 分（${entry.mode}，${entry.date}）`;
+    rankListEl.appendChild(item);
+  });
+}
+
+function pushRank(scoreValue) {
+  const modeNameMap = {
+    classic: "经典",
+    wrap: "穿墙",
+    obstacle: "障碍",
+    hard: "地狱"
+  };
+  const next = {
+    score: scoreValue,
+    mode: modeNameMap[modeSelectEl.value] || "经典",
+    date: formatDate(new Date())
+  };
+  rankEntries = [...rankEntries, next].sort((a, b) => b.score - a.score).slice(0, 10);
+  persistRankEntries();
+  updateRankList();
 }
 
 function currentTickMs() {
-  const tier = Math.floor(score / SPEED_TIER_EVERY);
-  return Math.max(MIN_TICK_MS, BASE_TICK_MS - tier * SPEED_DROP_MS);
+  const tier = Math.floor(score / modeConfig.speedTierEvery);
+  return Math.max(modeConfig.minTickMs, modeConfig.baseTickMs - tier * modeConfig.speedDropMs);
 }
 
 function clearGameTimer() {
@@ -69,6 +139,13 @@ function clearGameTimer() {
 function rescheduleTimer() {
   clearGameTimer();
   timerId = setInterval(step, currentTickMs());
+}
+
+function syncModeConfig() {
+  const selectedMode = CONFIG.modes[modeSelectEl.value] || CONFIG.modes.classic;
+  modeConfig = selectedMode;
+  wrapWallEl.checked = Boolean(selectedMode.wrapWall);
+  wrapWallEl.disabled = Boolean(selectedMode.wrapWall);
 }
 
 function initAudio() {
@@ -108,6 +185,11 @@ function playGameOver() {
   playTone(180, 0.18, 0.07);
 }
 
+function playWin() {
+  playTone(840, 0.08, 0.07);
+  playTone(980, 0.08, 0.07);
+}
+
 function isOnSnake(p) {
   return snake.some((part) => positionsEqual(part, p));
 }
@@ -120,13 +202,21 @@ function isBlockedCell(p) {
   return isOnSnake(p) || isOnObstacle(p);
 }
 
+function boardCapacity() {
+  return CONFIG.gridCount * CONFIG.gridCount - obstacles.length;
+}
+
+function hasFreeCell() {
+  return snake.length < boardCapacity();
+}
+
 function generateObstacles() {
   const list = [];
   const taken = new Set(snake.map((s) => `${s.x},${s.y}`));
   let guard = 0;
-  while (list.length < OBSTACLE_COUNT && guard < 800) {
+  while (list.length < modeConfig.obstacleCount && guard < 800) {
     guard += 1;
-    const c = { x: randomInt(gridCount), y: randomInt(gridCount) };
+    const c = { x: randomInt(CONFIG.gridCount), y: randomInt(CONFIG.gridCount) };
     const key = `${c.x},${c.y}`;
     if (taken.has(key)) continue;
     taken.add(key);
@@ -136,20 +226,20 @@ function generateObstacles() {
 }
 
 function spawnFood() {
-  let nextFood = { x: randomInt(gridCount), y: randomInt(gridCount) };
+  let nextFood = { x: randomInt(CONFIG.gridCount), y: randomInt(CONFIG.gridCount) };
   let guard = 0;
   while (isBlockedCell(nextFood) && guard < 500) {
     guard += 1;
-    nextFood = { x: randomInt(gridCount), y: randomInt(gridCount) };
+    nextFood = { x: randomInt(CONFIG.gridCount), y: randomInt(CONFIG.gridCount) };
   }
   if (!isBlockedCell(nextFood)) return nextFood;
-  for (let y = 0; y < gridCount; y += 1) {
-    for (let x = 0; x < gridCount; x += 1) {
+  for (let y = 0; y < CONFIG.gridCount; y += 1) {
+    for (let x = 0; x < CONFIG.gridCount; x += 1) {
       const p = { x, y };
       if (!isBlockedCell(p)) return p;
     }
   }
-  return nextFood;
+  return null;
 }
 
 function setStatus(text) {
@@ -171,33 +261,31 @@ function showStartOverlay() {
   showOverlay({
     title: "贪吃蛇",
     message:
-      "方向键或 WASD 控制，空格暂停。\n手机在画布上滑动即可转向。\n勾选「穿墙」可从边界循环到对面。",
+      "方向键或 WASD 控制，空格暂停。\n手机在画布上滑动即可转向。\n可选模式并支持本地排行榜。",
     buttonText: "开始游戏"
   });
 }
 
-function showGameOverOverlay() {
+function showFinishOverlay(title, message) {
   showOverlay({
-    title: "游戏结束",
-    message: `本局得分：${score}${score >= highScore && score > 0 ? "\n（新纪录！）" : ""}`,
+    title,
+    message,
     buttonText: "再来一局"
   });
 }
 
 function resetGame() {
-  wrapWall = Boolean(wrapWallEl.checked);
+  syncModeConfig();
   snake = [
     { x: 10, y: 10 },
     { x: 9, y: 10 },
     { x: 8, y: 10 }
   ];
-  obstacles = generateObstacles();
   direction = { x: 1, y: 0 };
   queuedDirection = { x: 1, y: 0 };
+  obstacles = generateObstacles();
   food = spawnFood();
   score = 0;
-  gameOver = false;
-  paused = false;
   scoreEl.textContent = score;
   setStatus("");
 }
@@ -266,8 +354,8 @@ function draw() {
   ctx.fillStyle = "#111827";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  for (let row = 0; row < gridCount; row += 1) {
-    for (let col = 0; col < gridCount; col += 1) {
+  for (let row = 0; row < CONFIG.gridCount; row += 1) {
+    for (let col = 0; col < CONFIG.gridCount; col += 1) {
       const shade = (row + col) % 2 === 0 ? "#1f2937" : "#243244";
       drawCell(col, row, shade, 2);
     }
@@ -285,25 +373,38 @@ function draw() {
     }
   });
 
-  drawCell(food.x, food.y, "#ef4444", 5);
+  if (food) {
+    drawCell(food.x, food.y, "#ef4444", 5);
+  }
 }
 
 function applyWrap(p) {
   let { x, y } = p;
-  if (x < 0) x = gridCount - 1;
-  if (x >= gridCount) x = 0;
-  if (y < 0) y = gridCount - 1;
-  if (y >= gridCount) y = 0;
+  if (x < 0) x = CONFIG.gridCount - 1;
+  if (x >= CONFIG.gridCount) x = 0;
+  if (y < 0) y = CONFIG.gridCount - 1;
+  if (y >= CONFIG.gridCount) y = 0;
   return { x, y };
 }
 
-function step() {
-  if (!started) {
-    draw();
-    return;
+function endGame(title, statusText, needRank = true) {
+  setState("over");
+  clearGameTimer();
+  if (needRank && score > 0) {
+    pushRank(score);
   }
+  setStatus(statusText);
+  const tip = score >= highScore && score > 0 ? "\n（新纪录！）" : "";
+  showFinishOverlay(title, `本局得分：${score}${tip}`);
+}
 
-  if (gameOver || paused) {
+function handleWin() {
+  playWin();
+  endGame("恭喜通关", "棋盘已铺满，胜利！", true);
+}
+
+function step() {
+  if (!isRunning()) {
     draw();
     return;
   }
@@ -315,34 +416,29 @@ function step() {
     y: head.y + direction.y
   };
 
+  const wrapWall = wrapWallEl.checked;
   if (wrapWall) {
     nextHead = applyWrap(nextHead);
   } else if (
     nextHead.x < 0 ||
     nextHead.y < 0 ||
-    nextHead.x >= gridCount ||
-    nextHead.y >= gridCount
+    nextHead.x >= CONFIG.gridCount ||
+    nextHead.y >= CONFIG.gridCount
   ) {
-    gameOver = true;
-    clearGameTimer();
     playGameOver();
-    setStatus("撞墙了！点击遮罩上的按钮再来一局。");
-    showGameOverOverlay();
+    endGame("游戏结束", "撞墙了！点击遮罩按钮再来一局。");
     draw();
     return;
   }
 
-  const willEat = positionsEqual(nextHead, food);
+  const willEat = food && positionsEqual(nextHead, food);
   const bodyForHit = willEat ? snake : snake.slice(0, -1);
   const hitSelf = bodyForHit.some((part) => positionsEqual(part, nextHead));
   const hitRock = isOnObstacle(nextHead);
 
   if (hitSelf || hitRock) {
-    gameOver = true;
-    clearGameTimer();
     playGameOver();
-    setStatus(hitRock ? "撞到障碍物！" : "咬到自己了！");
-    showGameOverOverlay();
+    endGame("游戏结束", hitRock ? "撞到障碍物！" : "咬到自己了！");
     draw();
     return;
   }
@@ -357,8 +453,18 @@ function step() {
       highScoreEl.textContent = highScore;
       persistHighScore();
     }
-    food = spawnFood();
     playEat();
+    if (!hasFreeCell()) {
+      handleWin();
+      draw();
+      return;
+    }
+    food = spawnFood();
+    if (!food) {
+      handleWin();
+      draw();
+      return;
+    }
     rescheduleTimer();
   } else {
     snake.pop();
@@ -368,7 +474,7 @@ function step() {
 }
 
 function requestDirection(next) {
-  if (!started || gameOver) return;
+  if (!isRunning()) return;
   const isOpposite = direction.x + next.x === 0 && direction.y + next.y === 0;
   if (!isOpposite) {
     queuedDirection = next;
@@ -378,10 +484,21 @@ function requestDirection(next) {
 function beginPlay() {
   resumeAudio();
   resetGame();
-  started = true;
+  setState("running");
   hideOverlay();
   rescheduleTimer();
   draw();
+}
+
+function pauseToggle() {
+  if (!isRunning() && gameState !== "paused") return;
+  if (gameState === "paused") {
+    setState("running");
+    setStatus("");
+  } else {
+    setState("paused");
+    setStatus("已暂停（空格继续）");
+  }
 }
 
 window.addEventListener("keydown", (event) => {
@@ -400,24 +517,23 @@ window.addEventListener("keydown", (event) => {
     requestDirection({ x: 1, y: 0 });
   } else if (k === " ") {
     event.preventDefault();
-    if (started && !gameOver) {
-      paused = !paused;
-      setStatus(paused ? "已暂停（空格继续）" : "");
-    }
+    pauseToggle();
   }
 });
 
 restartBtn.addEventListener("click", () => {
-  resumeAudio();
-  resetGame();
-  started = true;
-  hideOverlay();
-  rescheduleTimer();
-  draw();
+  beginPlay();
 });
 
 overlayBtn.addEventListener("click", () => {
   beginPlay();
+});
+
+modeSelectEl.addEventListener("change", () => {
+  syncModeConfig();
+  if (gameState === "running" || gameState === "paused") {
+    setStatus("模式已切换，将在下一局生效。");
+  }
 });
 
 canvas.addEventListener(
@@ -438,7 +554,7 @@ canvas.addEventListener(
     const dx = t.clientX - touchStart.x;
     const dy = t.clientY - touchStart.y;
     touchStart = null;
-    if (Math.abs(dx) < SWIPE_MIN_PX && Math.abs(dy) < SWIPE_MIN_PX) return;
+    if (Math.abs(dx) < CONFIG.swipeMinPx && Math.abs(dy) < CONFIG.swipeMinPx) return;
     if (Math.abs(dx) >= Math.abs(dy)) {
       requestDirection(dx > 0 ? { x: 1, y: 0 } : { x: -1, y: 0 });
     } else {
@@ -450,9 +566,11 @@ canvas.addEventListener(
 
 highScore = loadHighScore();
 highScoreEl.textContent = highScore;
-
+rankEntries = loadRankEntries();
+updateRankList();
+syncModeConfig();
 resetGame();
-started = false;
+setState("idle");
 showStartOverlay();
 draw();
 
