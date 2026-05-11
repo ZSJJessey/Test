@@ -12,7 +12,7 @@ const overlayBtn = document.getElementById("overlayBtn");
 
 const gridCount = 20;
 const tileSize = canvas.width / gridCount;
-const BASE_TICK_MS = 170;
+const BASE_TICK_MS = 175;
 const MIN_TICK_MS = 95;
 const SPEED_TIER_EVERY = 6;
 const SPEED_DROP_MS = 6;
