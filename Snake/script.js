@@ -27,6 +27,10 @@ const CONFIG = {
 
 const tileSize = canvas.width / CONFIG.gridCount;
 
+// 棋盘背景（格子底色）每帧重画很浪费：预渲染到离屏画布，draw() 只需一次 drawImage。
+const boardBgCanvas = document.createElement("canvas");
+const boardBgCtx = boardBgCanvas.getContext("2d");
+
 let snake;
 let direction;
 let queuedDirection;
@@ -57,10 +61,16 @@ function isRunning() {
   return gameState === "running";
 }
 
+function parseNonNegativeInt(raw, fallback = 0) {
+  if (raw == null) return fallback;
+  const n = parseInt(raw, 10);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(0, n);
+}
+
 function loadHighScore() {
   const raw = localStorage.getItem(CONFIG.highScoreKey);
-  const n = raw == null ? 0 : parseInt(raw, 10);
-  return Number.isFinite(n) ? Math.max(0, n) : 0;
+  return parseNonNegativeInt(raw, 0);
 }
 
 function persistHighScore() {
@@ -146,6 +156,35 @@ function syncModeConfig() {
   modeConfig = selectedMode;
   wrapWallEl.checked = Boolean(selectedMode.wrapWall);
   wrapWallEl.disabled = Boolean(selectedMode.wrapWall);
+}
+
+function renderBoardBackground() {
+  boardBgCanvas.width = canvas.width;
+  boardBgCanvas.height = canvas.height;
+  if (!boardBgCtx) return;
+
+  boardBgCtx.fillStyle = "#111827";
+  boardBgCtx.fillRect(0, 0, boardBgCanvas.width, boardBgCanvas.height);
+
+  for (let row = 0; row < CONFIG.gridCount; row += 1) {
+    for (let col = 0; col < CONFIG.gridCount; col += 1) {
+      const shade = (row + col) % 2 === 0 ? "#1f2937" : "#243244";
+      const padding = 2;
+      const px = col * tileSize + padding;
+      const py = row * tileSize + padding;
+      const w = tileSize - padding * 2;
+      const h = tileSize - padding * 2;
+      boardBgCtx.fillStyle = shade;
+      if (typeof boardBgCtx.roundRect === "function") {
+        boardBgCtx.beginPath();
+        boardBgCtx.roundRect(px, py, w, h, 2);
+        boardBgCtx.fill();
+      } else {
+        // 背景格子不用严格圆角，fallback 画普通矩形足够。
+        boardBgCtx.fillRect(px, py, w, h);
+      }
+    }
+  }
 }
 
 function initAudio() {
@@ -351,15 +390,10 @@ function drawSnakeHead(head, dir) {
 }
 
 function draw() {
-  ctx.fillStyle = "#111827";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  for (let row = 0; row < CONFIG.gridCount; row += 1) {
-    for (let col = 0; col < CONFIG.gridCount; col += 1) {
-      const shade = (row + col) % 2 === 0 ? "#1f2937" : "#243244";
-      drawCell(col, row, shade, 2);
-    }
+  if (boardBgCanvas.width !== canvas.width || boardBgCanvas.height !== canvas.height) {
+    renderBoardBackground();
   }
+  ctx.drawImage(boardBgCanvas, 0, 0);
 
   obstacles.forEach((o) => {
     drawCell(o.x, o.y, "#78350f", 4);
@@ -432,6 +466,7 @@ function step() {
   }
 
   const willEat = food && positionsEqual(nextHead, food);
+  // 允许“尾巴刚移走的位置”被下一步占用：因此不吃食物时，判定自撞要排除尾巴格。
   const bodyForHit = willEat ? snake : snake.slice(0, -1);
   const hitSelf = bodyForHit.some((part) => positionsEqual(part, nextHead));
   const hitRock = isOnObstacle(nextHead);
@@ -482,6 +517,7 @@ function requestDirection(next) {
 }
 
 function beginPlay() {
+  // AudioContext 需要用户手势触发；从按钮/点击开始游戏时尝试 resume，可避免移动端无声。
   resumeAudio();
   resetGame();
   setState("running");
@@ -572,8 +608,34 @@ syncModeConfig();
 resetGame();
 setState("idle");
 showStartOverlay();
+renderBoardBackground();
 draw();
 
 window.addEventListener("beforeunload", () => {
   clearGameTimer();
 });
+
+function runSelfTests() {
+  const results = [];
+  const assert = (name, cond) => results.push({ name, ok: Boolean(cond) });
+
+  assert("parseNonNegativeInt(null)=0", parseNonNegativeInt(null, 0) === 0);
+  assert("parseNonNegativeInt('12')=12", parseNonNegativeInt("12", 0) === 12);
+  assert("parseNonNegativeInt('-3')=0", parseNonNegativeInt("-3", 0) === 0);
+  assert("parseNonNegativeInt('abc')=0", parseNonNegativeInt("abc", 0) === 0);
+  assert("applyWrap x<0", positionsEqual(applyWrap({ x: -1, y: 0 }), { x: CONFIG.gridCount - 1, y: 0 }));
+  assert("applyWrap y>=N", positionsEqual(applyWrap({ x: 0, y: CONFIG.gridCount }), { x: 0, y: 0 }));
+
+  const fail = results.filter((r) => !r.ok);
+  if (fail.length === 0) {
+    console.info("[selftest] ok", results);
+    setStatus("自检通过（selftest=1）");
+  } else {
+    console.error("[selftest] failed", fail, results);
+    setStatus(`自检失败：${fail.map((f) => f.name).join("；")}`);
+  }
+}
+
+if (new URLSearchParams(window.location.search).get("selftest") === "1") {
+  runSelfTests();
+}
