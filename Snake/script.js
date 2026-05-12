@@ -536,7 +536,10 @@ function pauseToggle() {
     setStatus("已暂停（空格继续）");
   }
 }
-
+/*  该代码监听键盘按键，实现游戏的控制操作：
+方向键和 WASD 控制贪吃蛇移动方向，空格键用于暂停或继续游戏。
+之所以用 event.preventDefault()，是为了防止页面默认滚动等行为干扰游戏体验
+*/
 window.addEventListener("keydown", (event) => {
   const k = event.key;
   if (k === "ArrowUp" || k === "w" || k === "W") {

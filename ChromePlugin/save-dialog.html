@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>保存摘录</title>
+    <link rel="stylesheet" href="popup.css" />
+    <style>
+      body {
+        width: 360px;
+        max-height: none;
+        min-height: 200px;
+      }
+      .sd-wrap {
+        padding: 12px;
+      }
+      .sd-title {
+        margin: 0 0 10px;
+        font-size: 16px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sd-wrap">
+      <h1 class="sd-title">保存摘录</h1>
+      <div id="sd-error" class="warn-box hidden" role="alert"></div>
+      <div id="sd-preview" class="preview-box"></div>
+      <div id="sd-over" class="warn-box hidden"></div>
+      <div id="sd-clip" class="clip-actions hidden">
+        <button type="button" id="sd-btn-clip" class="btn btn-primary btn-small">裁剪至 2000 字并保存</button>
+        <button type="button" id="sd-btn-cancel" class="btn btn-ghost btn-small">取消</button>
+      </div>
+      <div id="sd-fields">
+        <div class="row">
+          <label class="visually-hidden" for="sd-category">选择分类</label>
+          <select id="sd-category" class="row-grow" aria-label="保存到分类"></select>
+        </div>
+        <div class="row" style="margin-top: 8px">
+          <input
+            type="text"
+            id="sd-new-cat"
+            placeholder="新建分类名称"
+            maxlength="32"
+            aria-label="新建分类名称"
+          />
+          <button type="button" id="sd-add-cat" class="btn btn-ghost btn-small">添加分类</button>
+        </div>
+      </div>
+      <div class="dialog-actions" style="margin-top: 12px; justify-content: flex-start">
+        <button type="button" id="sd-btn-save" class="btn btn-primary">保存</button>
+        <button type="button" id="sd-btn-close" class="btn btn-ghost">关闭</button>
+      </div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="common.js"></script>
+    <script src="storage.js"></script>
+    <script src="save-dialog.js"></script>
+  </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>网页摘录</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <h1>摘录</h1>
+        <span id="count-badge" class="badge" aria-live="polite">0 条</span>
+        <button
+          type="button"
+          id="btn-save-selection"
+          class="btn btn-primary btn-small"
+          title="保存浏览器当前标签页中选中的文字"
+        >
+          保存当前选中
+        </button>
+        <button type="button" id="btn-manage-cats" class="btn btn-ghost btn-small" title="管理分类">
+          分类管理
+        </button>
+      </header>
+
+      <section class="toolbar" aria-label="筛选与搜索">
+        <div class="row">
+          <label class="visually-hidden" for="filter-category">按分类筛选</label>
+          <select id="filter-category" class="row-grow" aria-label="按分类筛选"></select>
+        </div>
+        <div class="row">
+          <label class="visually-hidden" for="search-input">搜索摘录</label>
+          <input
+            type="search"
+            id="search-input"
+            class="row-grow"
+            placeholder="搜索正文或来源标题"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="button" id="btn-clear-search" class="btn btn-ghost btn-small" title="清空搜索">
+            清空
+          </button>
+        </div>
+      </section>
+
+      <section id="save-panel" class="save-panel hidden" aria-label="保存当前摘录">
+        <h2>保存摘录</h2>
+        <div id="save-error" class="warn-box hidden" role="alert"></div>
+        <div id="save-preview" class="preview-box"></div>
+        <div id="save-over" class="warn-box hidden"></div>
+        <div id="clip-actions" class="clip-actions hidden">
+          <button type="button" id="btn-clip-save" class="btn btn-primary btn-small">
+            裁剪至 2000 字并保存
+          </button>
+          <button type="button" id="btn-cancel-save" class="btn btn-ghost btn-small">取消</button>
+        </div>
+        <div class="row">
+          <label class="visually-hidden" for="save-category">选择分类</label>
+          <select id="save-category" class="row-grow" aria-label="保存到分类"></select>
+        </div>
+        <div class="row" style="margin-top: 8px">
+          <input
+            type="text"
+            id="new-category-name"
+            placeholder="新建分类名称"
+            maxlength="32"
+            aria-label="新建分类名称"
+          />
+          <button type="button" id="btn-add-category-inline" class="btn btn-ghost btn-small">
+            添加分类
+          </button>
+        </div>
+        <div class="dialog-actions" style="margin-top: 12px; margin-bottom: 0">
+          <button type="button" id="btn-confirm-save" class="btn btn-primary">保存</button>
+          <button type="button" id="btn-dismiss-save" class="btn btn-ghost">关闭</button>
+        </div>
+      </section>
+
+      <main id="list" class="list-wrap" aria-live="polite"></main>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <dialog id="dialog-categories" aria-labelledby="dialog-cat-title">
+      <div class="dialog-inner">
+        <h2 id="dialog-cat-title">分类管理</h2>
+        <p class="muted">删除分类时，其中摘录将移至「未分类」。</p>
+        <div id="category-list"></div>
+        <div class="new-cat-row">
+          <div class="row">
+            <input
+              type="text"
+              id="dialog-new-cat"
+              placeholder="新建分类"
+              maxlength="32"
+              aria-label="新建分类名称"
+            />
+            <button type="button" id="dialog-add-cat" class="btn btn-primary btn-small">添加</button>
+          </div>
+          <p id="dialog-cat-error" class="warn-box hidden" style="margin-top: 8px" role="alert"></p>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" id="dialog-cat-close" class="btn btn-primary">完成</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="dialog-confirm-delete" aria-labelledby="confirm-del-title">
+      <div class="dialog-inner">
+        <h2 id="confirm-del-title">删除摘录？</h2>
+        <p id="confirm-del-body" class="muted"></p>
+        <div class="dialog-actions">
+          <button type="button" id="confirm-del-cancel" class="btn btn-ghost">取消</button>
+          <button type="button" id="confirm-del-ok" class="btn btn-danger">删除</button>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="common.js"></script>
+    <script src="storage.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "网页摘录",
+  "version": "0.1.0",
+  "description": "选中网页文本，分类保存并一键复制使用",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "网页摘录",
+    "default_popup": "popup.html"
+  },
+  "commands": {
+    "save-selection": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "保存当前选中到摘录"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/selection-toolbar.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
+}
