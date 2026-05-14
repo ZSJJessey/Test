@@ -276,7 +276,7 @@
     var indicatorsEl = $("#carouselIndicators");
     var dots = [];
     var cIdx = 0;
-    var AUTO_MS = 3000;
+    var AUTO_MS = 2000;
     var carouselTimer = null;
 
     if (indicatorsEl && slides.length) {
