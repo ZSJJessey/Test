@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="台湾 6 天 5 晚自由行互动攻略 — 路线、准备事项与每日行程一览。" />
+    <title>台湾 6 天 5 晚自由行互动攻略 Demo</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preload" href="./assets/image/TaibeiStation.JPG" as="image" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <header class="site-header" role="banner">
+      <div class="site-header__inner">
+        <span class="site-header__brand">Taiwan 6D5N</span>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" title="切换深浅色">
+          <span class="theme-toggle__icon" aria-hidden="true">◐</span>
+          <span class="theme-toggle__label">主题</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- 1. Hero -->
+      <section class="hero" id="hero" aria-labelledby="heroTitle">
+        <div class="hero__media">
+          <!-- 轮播图开始 -->
+          <div class="carousel" id="heroCarousel" role="region" aria-roledescription="轮播" aria-label="台湾旅行氛围图">
+            <img
+              class="carousel__img"
+              src="./assets/image/象山.jpg"
+              alt="101夜景俯瞰台北"
+              width="1920"
+              height="1080"
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              class="carousel__img"
+              src="./assets/image/日月潭.jpg"
+              alt="日月潭景色"
+              width="1920"
+              height="1080"
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              class="carousel__img"
+              src="./assets/image/九份老街.jpeg"
+              alt="九份老街"
+              width="1920"
+              height="1080"
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              class="carousel__img"
+              src="./assets/image/阿里山1.jpg"
+              alt="阿里山火车沿途风景"
+              width="1920"
+              height="1080"
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              class="carousel__img"
+              src="./assets/image/阿里山2.jpg"
+              alt="阿里山日出"
+              width="1920"
+              height="1080"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="carousel__indicators" id="carouselIndicators" role="group" aria-label="切换轮播图片"></div>
+          </div>
+          <div class="hero__scrim" aria-hidden="true"></div>
+        </div>
+        <div class="hero__content">
+          <h1 class="hero__title" id="heroTitle">台湾 6 天 5 晚自由行互动攻略</h1>
+          <p class="hero__subtitle">第一次去台湾，照着玩基本不踩雷 — 路线、准备与每日节奏一眼看清。</p>
+          <div class="hero__chips" role="list">
+            <span class="chip chip--light" role="listitem">自由行</span>
+            <span class="chip chip--light" role="listitem">路线清晰</span>
+            <span class="chip chip--light" role="listitem">可抄作业</span>
+          </div>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#timeline">查看路线</a>
+            <button type="button" class="btn btn--ghost" id="btnExpandAll">展开全部行程</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. 总览 -->
+      <section class="section section--tight" id="overview" aria-labelledby="overviewTitle">
+        <div class="section__head">
+          <h2 class="section__title" id="overviewTitle">行程总览</h2>
+          <p class="section__lede">用 30 秒建立整体印象，再往下拆到每一天。</p>
+        </div>
+        <div class="overview-scroll">
+          <div class="overview-grid">
+            <article class="stat-card">
+              <p class="stat-card__label">总天数</p>
+              <p class="stat-card__value">6 天 <span class="stat-card__unit">5 晚</span></p>
+            </article>
+            <article class="stat-card">
+              <p class="stat-card__label">路线骨架</p>
+              <p class="stat-card__value stat-card__value--sm">城市烟火（台北）→ 淡水 → 九份 → 日月潭 → 阿里山 → 桃园购物返程</p>
+            </article>
+            <article class="stat-card">
+              <p class="stat-card__label">适合谁</p>
+              <p class="stat-card__value stat-card__value--sm">第一次去台湾、愿意提前订票换现、能接受捷运+公车+高铁混搭的人</p>
+            </article>
+            <article class="stat-card">
+              <p class="stat-card__label">亮点关键词</p>
+              <div class="stat-card__tags">
+                <span class="pill">夜景</span>
+                <span class="pill">码头</span>
+                <span class="pill">海景</span>
+                <span class="pill">夜市</span>
+                <span class="pill">老街</span>
+                <span class="pill">湖景</span>
+                <span class="pill">山景</span>
+                <span class="pill">日出</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 出发前准备 -->
+      <section class="section" id="prep" aria-labelledby="prepTitle">
+        <div class="section__head">
+          <h2 class="section__title" id="prepTitle">出发前准备</h2>
+          <p class="section__lede">证件、交通、支付与工具（记得提前锁住宿与跨城票！！！）。</p>
+        </div>
+        <div class="tabs" data-tabs>
+          <div class="tabs__list" role="tablist" aria-label="准备事项分类">
+            <button type="button" class="tabs__tab is-active" role="tab" aria-selected="true" aria-controls="prep-panel-docs" id="prep-tab-docs" data-tab="docs">证件</button>
+            <button type="button" class="tabs__tab" role="tab" aria-selected="false" aria-controls="prep-panel-transit" id="prep-tab-transit" data-tab="transit">交通</button>
+            <button type="button" class="tabs__tab" role="tab" aria-selected="false" aria-controls="prep-panel-pay" id="prep-tab-pay" data-tab="pay">支付</button>
+            <button type="button" class="tabs__tab" role="tab" aria-selected="false" aria-controls="prep-panel-tools" id="prep-tab-tools" data-tab="tools">工具</button>
+          </div>
+          <div class="tabs__panels">
+            <div class="tabs__panel is-active" role="tabpanel" id="prep-panel-docs" aria-labelledby="prep-tab-docs" data-panel="docs">
+              <ul class="info-cards">
+                <li class="info-card">
+                  <div class="info-card__icon" aria-hidden="true">▣</div>
+                  <div>
+                    <h3 class="info-card__title">提前订：住宿与交通</h3>
+                    <p class="info-card__text">务必在<strong>官网或正规渠道</strong>订好住宿，并锁位跨城/景点交通（如日月潭↔阿里山公车、高铁衔接）。热门日期现场常只剩不理想班次——提前锁位等于买一份淡定。</p>
+                  </div>
+                </li>
+                <li class="info-card">
+                  <div class="info-card__icon" aria-hidden="true">✎</div>
+                  <div>
+                    <h3 class="info-card__title">入境材料与入境单</h3>
+                    <p class="info-card__text">护照、符合政策的入境与健康申报（若有）、<strong>入境单</strong>（机上或落地前填好；电子版即可）。政策会变，出发前以<strong>航司与官方说明</strong>为准——官方通常比小红书更不容易翻车。</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="tabs__panel" role="tabpanel" id="prep-panel-transit" aria-labelledby="prep-tab-transit" hidden data-panel="transit">
+              <ul class="info-cards">
+                <li class="info-card">
+                  <div class="info-card__icon" aria-hidden="true">◎</div>
+                  <div>
+                    <h3 class="info-card__title">悠游卡与捷运</h3>
+                    <p class="info-card__text">机场或 711 可购悠游卡。台北市内刷<strong>悠游卡</strong>搭捷运很方便；6 天行程参考：充约<strong> 7000 台币</strong>，回程常还能剩两三百——略多充通常比反复找 ATM 省心。</p>
+                  </div>
+                </li>
+                <li class="info-card">
+                  <div class="info-card__icon" aria-hidden="true">▸</div>
+                  <div>
+                    <h3 class="info-card__title">高铁、公车与末班</h3>
+                    <p class="info-card__text">跨城（如台北→台中再转日月潭）走<strong>高铁 + 公车</strong>衔接。往日月潭、阿里山等热门段务必<strong>提前订票</strong>。用地图记<strong>末班捷运/公车</strong>，避免夜景看完变「城市徒步耐力赛」。</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="tabs__panel" role="tabpanel" id="prep-panel-pay" aria-labelledby="prep-tab-pay" hidden data-panel="pay">
+              <ul class="info-cards">
+                <li class="info-card">
+                  <div class="info-card__icon" aria-hidden="true">¥</div>
+                  <div>
+                    <h3 class="info-card__title">现金、机场取现与 711 ATM</h3>
+                    <p class="info-card__text">夜市、小吃摊、部分购票点仍偏现金。机场大厅可用<strong>带芯片的 Visa 信用卡</strong>取现；实测约换<strong>7000 台币</strong>偏充裕。除机场外，<strong>每家 7-11 店内 ATM</strong>也可领现（有手续费，依发卡行与机具为准）。建议分散换、分散放。</p>
+                  </div>
+                </li>
+                <li class="info-card">
+                  <div class="info-card__icon" aria-hidden="true">📱</div>
+                  <div>
+                    <h3 class="info-card__title">电话卡</h3>
+                    <p class="info-card__text">桃园机场可办「玩几天买几天」的<strong>无限流量</strong>卡；价格随汇率浮动，约<strong>100+ RMB</strong>可作心理预算，以柜台为准。多人同行可评估热点需求。</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="tabs__panel" role="tabpanel" id="prep-panel-tools" aria-labelledby="prep-tab-tools" hidden data-panel="tools">
+              <ul class="info-cards">
+                <li class="info-card">
+                  <div class="info-card__icon" aria-hidden="true">⌖</div>
+                  <div>
+                    <h3 class="info-card__title">Google Maps、Klook、Uber</h3>
+                    <p class="info-card__text">
+                      全程以 Google Maps 为主，把每日地点加入<strong>已储存清单</strong>，并把<strong>末班捷运/公车</strong>记进备忘录。步行、捷运与公车以地图实时路线为准。<br>
+                      <strong>Klook</strong> 可提前在线购景点/交通票，节省现场排队；<strong>Uber</strong> 适合市区不想坐捷运或公车时打车，但价格相较大众交通明显更高。
+                    </p>
+                  </div>
+                </li>
+                <li class="info-card">
+                  <div class="info-card__icon" aria-hidden="true">⏱</div>
+                  <div>
+                    <h3 class="info-card__title">订票、闹钟与行程缓冲</h3>
+                    <p class="info-card__text">日月潭↔阿里山公车↔高铁、萤火虫星空团、日出团等设<strong>日历提醒</strong>。跨城段预留缓冲：<strong>人生可以赶，车不等你</strong>；船班、公车表以现场公告为准。</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. 行程时间线（PRD 9.4 / 页面清单 4） -->
+      <section class="section" id="timeline" aria-labelledby="timelineTitle">
+        <div class="section__head">
+          <h2 class="section__title" id="timelineTitle">每日时间线</h2>
+          <p class="section__lede">点一天展开详情，与下方「路线一览」节点联动。</p>
+        </div>
+        <div class="timeline" data-timeline>
+          <article class="day-card" data-day="1" data-route-index="0">
+            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-1" id="day-btn-1">
+              <span class="day-card__badge">Day 1</span>
+              <span class="day-card__meta">台北 · 西门町、夜爬象山</span>
+              <span class="day-card__chevron" aria-hidden="true"></span>
+            </button>
+            <div class="day-card__thumb-wrap">
+              <img class="day-card__thumb" src="./assets/image/台北车站.JPG" alt="Day1 台北车站" width="1200" height="800" loading="lazy" />
+            </div>
+            <div class="day-card__panel" id="day-panel-1" hidden>
+              <div class="day-sections">
+                <section class="day-block">
+                  <h3 class="day-block__title">桃园机场 · 落地三件事</h3>
+                  <p>
+                    <strong>电话卡</strong>：按天数选无限流量或定量；约 <strong>100+ RMB</strong>（以柜台为准）。<br>
+                    <strong>悠游卡</strong>：6 天可参考充 <strong>7000 台币</strong>，全程 <strong>换多不换少</strong>。<br>
+                    <strong>现金</strong>：机场大厅用 <strong>带芯片的 Visa</strong> 换汇，实测约 <strong>7000 台币</strong>较充裕；夜市与部分购票点仍偏现金。
+                  </p>
+                </section>
+   
+                <section class="day-block">
+                  <h3 class="day-block__title">上午 · 入境与入住</h3>
+                  <p>入境、领行李后完成办卡换汇，<strong>刷悠游卡搭捷运</strong>进城。订不到「星空旅舍」时，<strong>WORK INN</strong> 可作环境还不错的替代。第一天以安顿为主，别把体力条在第一格就刷满。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">下午 · 西门町</h3>
+                  <p>可先搜「西门町美食」做清单，但保留弹性——排队也是隐形消费（时间）。<strong>天天利卤肉饭</strong>强烈安利，扎实一餐再逛。若不爱大肠、黏糊面线，<strong>阿宗面线</strong>排队虽红未必合你口味，可勇敢跳过网红打卡点。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">晚上 · 象山夜景</h3>
+                  <p><strong>夜爬象山</strong>俯瞰 101 夜景：防滑鞋、水、量力；安全比出片更重要。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">夜宵 · 品都串烧</h3>
+                  <p>个人榜 <strong>Top1</strong>：<strong>串烧 + 生啤</strong>，愿意二刷；排队久可改时段（排队也要吃！！！）。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">交通</h3>
+                  <p>机场捷运进城；台北市以捷运为主；去台中/台南等跨城再上高铁剧本。</p>
+                </section>
+                <section class="day-block day-block--tip">
+                  <h3 class="day-block__title">Tips</h3>
+                  <p>能刷卡就刷卡，现金留给「只收现金」的摊位；确认网络与现金再冲夜市。</p>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <article class="day-card" data-day="2" data-route-index="1">
+            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-2" id="day-btn-2">
+              <span class="day-card__badge">Day 2</span>
+              <span class="day-card__meta">淡水 · 渔人码头、淡水老街（星空旅舍）</span>
+              <span class="day-card__chevron" aria-hidden="true"></span>
+            </button>
+            <div class="day-card__thumb-wrap">
+              <img class="day-card__thumb" src="./assets/image/渔人码头.jpg" alt="Day2 渔人码头" width="1200" height="800" loading="lazy" />
+            </div>
+            <div class="day-card__panel" id="day-panel-2" hidden>
+              <div class="day-sections">
+                <section class="day-block">
+                  <h3 class="day-block__title">住宿 · 星空旅舍</h3>
+                  <p>这一晚强推<strong>星空旅舍</strong>：干净、设施好，旺季务必提早订。订不到时心理预期要准备好「与替代方案互相安慰」。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">上午 · 渔人码头</h3>
+                  <p>拍照、看海、吹风；注意防晒与海边的「发型自由」风力。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">下午 · 淡水老街</h3>
+                  <p>搜「淡水老街美食」做候选，策略<strong>少量多样</strong>。阿给、鱼丸等特色可参考评价再下手。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">夜宵 · 品都串烧</h3>
+                  <p>没错又来了：<strong>串烧 + 生啤</strong>，专一也是一种旅行美德（我也是Dog.jpg）。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">交通</h3>
+                  <p><strong>捷运 + 有轨电车 + 公车</strong>（渔人码头与淡水老街间留意接驳）。务必盯<strong>Google Map公车时间和等车地点</strong>，别让「夜景很美」变成「回程很悬」。</p>
+                </section>
+                <section class="day-block day-block--tip">
+                  <h3 class="day-block__title">Tips</h3>
+                  <p>假日人潮多；日落前后和海景码头都很适合拍照。</p>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <article class="day-card" data-day="3" data-route-index="2">
+            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-3" id="day-btn-3">
+              <span class="day-card__badge">Day 3</span>
+              <span class="day-card__meta">国立故宫 · 九份老街（星空旅舍第二晚）</span>
+              <span class="day-card__chevron" aria-hidden="true"></span>
+            </button>
+            <div class="day-card__thumb-wrap">
+              <img class="day-card__thumb" src="./assets/image/九份老街1.jpg" alt="Day3 九份老街" width="1200" height="800" loading="lazy" />
+            </div>
+            <div class="day-card__panel" id="day-panel-3" hidden>
+              <div class="day-sections">
+                <section class="day-block">
+                  <h3 class="day-block__title">住宿 · 星空旅舍</h3>
+                  <p>第二晚续住，行李不搬，幸福感 +10086（人均250+rmb，越早订越便宜）。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">上午 · 国立故宫博物院</h3>
+                  <p>预留整块时间看展；可租<strong>在线语音导览</strong>，听懂展品背后故事，比纯打卡更像「门票买到了知识」。展场冷气足，穿舒适鞋。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">下午至晚上 · 九份老街</h3>
+                  <p>小吃、挂件、冰箱贴、<strong>阿里山金萱茶叶</strong>等伴手礼建议集中一段买齐，少拎重物爬坡。台阶多、假日挤，<strong>大行李箱越拖越后悔</strong>。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">夜宵</h3>
+                  <p>旅舍附近麦当劳：保底选项，口味一般但不丢人。也可自行选择美食（看个人喜好）。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">交通</h3>
+                  <p>捷运转公车到故宫与九份；用地图锁定<strong>具体站名与线路编号</strong>。<strong>公车时间都不短</strong>，晚上回九份务必盯<strong>末班车</strong>!，避免剧情变「高价计程车谈判」。</p>
+                </section>
+                <section class="day-block day-block--tip">
+                  <h3 class="day-block__title">Tips</h3>
+                  <p>
+                    国立博物馆可买一些小文物纪念品作伴手礼，送给家人朋友的不二选择。<br>
+                    九份雨天路滑，注意安全。<br>
+                    九份不适合拖大箱，背个小包即可。<br>
+                    小礼品也是在九份买的，请自行选择（看个人喜好）。<br>
+                  </p>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <article class="day-card" data-day="4" data-route-index="3">
+            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-4" id="day-btn-4">
+              <span class="day-card__badge">Day 4</span>
+              <span class="day-card__meta">高铁 · 日月潭（湖悦景观旅店）</span>
+              <span class="day-card__chevron" aria-hidden="true"></span>
+            </button>
+            <div class="day-card__thumb-wrap">
+              <img class="day-card__thumb" src="./assets/image/日月潭1.jpg" alt="Day4 日月潭" width="1200" height="800" loading="lazy" />
+            </div>
+            <div class="day-card__panel" id="day-panel-4" hidden>
+              <div class="day-sections">
+                <section class="day-block">
+                  <h3 class="day-block__title">住宿 · 湖悦景观旅店</h3>
+                  <p>携程可订<strong>南投日月潭湖悦景观旅店</strong>。湖景吃天气：晴天像明信片，阴天像忘了付费的滤镜——心态放平，湖还是那片湖。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">上午 · 高铁与衔接票</h3>
+                  <p><strong>捷运 → 台北高铁站 → 台中高铁站</strong>，站口买好<strong>往日月潭公车票</strong>与<strong>日月潭船票</strong>（班次、月台、是否划位一次问清）。<strong>捷运 → 公车到游客中心 → 船到旅店</strong>，每段预留缓冲：人生可以赶，车不等你。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">下午 · 日月潭玩法</h3>
+                  <p>游船跳岛、单车或公车环湖、<strong>缆车</strong>等；建议先安排易受天气影响的项目。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">美食</h3>
+                  <p><strong>特色民族烤肉</strong>、<strong>鸡翅包饭</strong>、<strong>阿婆茶叶蛋</strong>、<strong>牛肉面</strong>等，体验型一餐；油腻与份量自控，别把胃当无限背包。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">交通</h3>
+                  <p>高铁 + 公车 + 船运串联；公车耗时、船班会变，以<strong>现场公告与地图</strong>为准。</p>
+                </section>
+                <section class="day-block day-block--tip">
+                  <h3 class="day-block__title">Tips</h3>
+                  <p>防晒补水；晕船者提前准备；盯紧船班与公车表，它们是防翻车护栏。<br>
+                    日月潭的景点很多，可以慢慢逛，感受湖光山色。<br>
+                    如果你想从日月潭到阿里山的公车票，需要提前在网上预定付款！，保存二维码。<br>
+                  </p>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <article class="day-card" data-day="5" data-route-index="4">
+            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-5" id="day-btn-5">
+              <span class="day-card__badge">Day 5</span>
+              <span class="day-card__meta">阿里山 · 小火车、萤火虫、星空、日出团</span>
+              <span class="day-card__chevron" aria-hidden="true"></span>
+            </button>
+            <div class="day-card__thumb-wrap">
+              <img class="day-card__thumb" src="./assets/image/阿里山4.jpg" alt="Day5 阿里山" width="1200" height="800" loading="lazy" />
+            </div>
+            <div class="day-card__panel" id="day-panel-5" hidden>
+              <div class="day-sections">
+                <section class="day-block">
+                  <h3 class="day-block__title">住宿 · 阿里山旅舍</h3>
+                  <p>携程 / 小红书挑口碑店；山区重点：<strong>保暖、接驳、早餐、隔音</strong>。睡得好，隔日看日出才像「被风景叫醒」。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">上午 · 日月潭 → 阿里山公车（关键）</h3>
+                  <p><strong>务必提前买票</strong>：日月潭到阿里山热门段，没提前订可能<strong>不让上车</strong>——硬规则型剧情杀，别赌运气。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">下午 · 小火车与步道</h3>
+                  <p>阿里山火车上山，徒步逛森林与神木；海拔温差大，<strong>外套不是时尚单品，是生存装备</strong>。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">晚上 · 萤火虫、星空与隔日日出</h3>
+                  <p>旅舍前台报团：问清集合点、时间、退费。拍星空避免强光扫别人镜头——你的朋友圈很亮，别人的快门会哭。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">美食</h3>
+                  <p><strong>葱爆山猪肉</strong>：山区高热量很合理，香辣与份量按战斗力选择。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">交通</h3>
+                  <p>阿里山到嘉义站等公车同样建议<strong>提前订</strong>。若用私家车接送，务必选<strong>合法合规</strong>渠道。</p>
+                </section>
+                <section class="day-block day-block--tip">
+                  <h3 class="day-block__title">Tips</h3>
+                  <p>山路弯多，易晕车者提前准备；头灯与手机电量给日出留足。<br/>
+                  周三有不一样的小火车哦。</p>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <article class="day-card" data-day="6" data-route-index="5">
+            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-6" id="day-btn-6">
+              <span class="day-card__badge">Day 6</span>
+              <span class="day-card__meta">日出 · 嘉义 · 高铁桃园 · 购物小镇 · 机场免税</span>
+              <span class="day-card__chevron" aria-hidden="true"></span>
+            </button>
+            <div class="day-card__thumb-wrap">
+              <img class="day-card__thumb" src="./assets/image/阿里山3.jpg" alt="Day6 阿里山日出与返程" width="1200" height="800" loading="lazy" />
+            </div>
+            <div class="day-card__panel" id="day-panel-6" hidden>
+              <div class="day-sections">
+                <section class="day-block">
+                  <h3 class="day-block__title">清晨 · 日出团</h3>
+                  <p>约 <strong>4:30</strong> 起床跟日出团，幽默导游讲解是附加价值——冷风吹在脸上也会觉得这风吹得很有文化（虽然眼睛都睁不开hhh）。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">中午 · 公车至嘉义</h3>
+                  <p>搭公车往<strong>嘉义站</strong>，车程约 <strong>3.5 小时</strong>：水、晕车准备、厕所策略三件套；别空腹硬扛也别吃太撑，中庸之道坐车最稳。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">下午 · 高铁桃园 + 购物小镇</h3>
+                  <p>高铁到桃园后逛<strong>购物小镇</strong>买衣服；试衣、退税、行李额度一起想，别让箱子装不下你的冲动。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">晚上 · 机场免税店</h3>
+                  <p>如 <strong>潘海利根兽首</strong>、<strong>威比猪限定</strong>、<strong>台湾香烟</strong>等仪式感结尾；液体与登机规范记牢：<strong>香水很好，安检很严</strong>。</p>
+                </section>
+                <section class="day-block">
+                  <h3 class="day-block__title">交通</h3>
+                  <p>公车 + 高铁 + 机场动线；回程班次提前查，倒推出发时间。</p>
+                </section>
+                <section class="day-block day-block--tip">
+                  <h3 class="day-block__title">Tips</h3>
+                  <p>最后一天宁可松一点；伴手礼与液体符合登机规范。</p>
+                </section>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 5. 路线可视化（PRD 9.5 / UI 文档 6.5） -->
+      <section class="section" id="route" aria-labelledby="routeTitle">
+        <div class="section__head">
+          <h2 class="section__title" id="routeTitle">路线一览</h2>
+          <p class="section__lede">城市顺序与正文一致；节点对应 Day1–Day6 关键城市。</p>
+        </div>
+        <div class="route-map" data-route-map aria-label="行程城市顺序">
+          <div class="route-map__track" aria-hidden="true"></div>
+          <ol class="route-map__nodes">
+            <li><button type="button" class="route-node is-active" data-route-index="0" aria-current="true">台北</button></li>
+            <li><button type="button" class="route-node" data-route-index="1">淡水</button></li>
+            <li><button type="button" class="route-node" data-route-index="2">九份</button></li>
+            <li><button type="button" class="route-node" data-route-index="3">日月潭</button></li>
+            <li><button type="button" class="route-node" data-route-index="4">阿里山</button></li>
+            <li><button type="button" class="route-node" data-route-index="5">桃园</button></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 6. 美食推荐（PRD 9.6） -->
+      <section class="section" id="food" aria-labelledby="foodTitle">
+        <div class="section__head">
+          <h2 class="section__title" id="foodTitle">美食推荐</h2>
+          <p class="section__lede">主观清单，与行程正文一致；点卡片展开。<br/>
+                                   欢迎大家在评论区推荐and避雷更多美食！（可以在评论区留言）</p>
+        </div>
+        <div class="food-grid">
+          <article class="food-card">
+            <button type="button" class="food-card__toggle" aria-expanded="false" aria-controls="food-detail-1">
+              <span class="food-card__name">品都串烧</span>
+              <span class="food-card__hint">展开</span>
+            </button>
+            <p class="food-card__scene">场景：台北宵夜 · 西门町一带</p>
+            <div class="food-card__detail" id="food-detail-1" hidden>
+              <p class="food-card__why">串烧 + 生啤是个人榜 Top1；炭火香气足、选择多，Day1 夜宵与 Day2 淡水后都值得回访。</p>
+              <p class="food-card__again"><span class="tag tag--soft">二刷意愿</span> 真心会二刷；排队久可改时段。</p>
+            </div>
+          </article>
+          <article class="food-card">
+            <button type="button" class="food-card__toggle" aria-expanded="false" aria-controls="food-detail-2">
+              <span class="food-card__name">天天利卤肉饭</span>
+              <span class="food-card__hint">展开</span>
+            </button>
+            <p class="food-card__scene">场景：西门町白天简餐</p>
+            <div class="food-card__detail" id="food-detail-2" hidden>
+              <p class="food-card__why">扎实卤肉饭，快速吃饱再逛街；比排队网红更符合「抄作业效率」。</p>
+              <p class="food-card__again"><span class="tag tag--soft">二刷意愿</span> 强推；看排队可评估外带。</p>
+            </div>
+          </article>
+          <article class="food-card">
+            <button type="button" class="food-card__toggle" aria-expanded="false" aria-controls="food-detail-3">
+              <span class="food-card__name">葱爆山猪肉</span>
+              <span class="food-card__hint">展开</span>
+            </button>
+            <p class="food-card__scene">场景：阿里山 / 山区补能</p>
+            <div class="food-card__detail" id="food-detail-3" hidden>
+              <p class="food-card__why">山区高热量，香辣开胃；和冷气温很搭。</p>
+              <p class="food-card__again"><span class="tag tag--soft">二刷意愿</span> 看店家与个人口味。</p>
+            </div>
+          </article>
+          <article class="food-card">
+            <button type="button" class="food-card__toggle" aria-expanded="false" aria-controls="food-detail-4">
+              <span class="food-card__name">民族烤肉 · 鸡翅包饭</span>
+              <span class="food-card__hint">展开</span>
+            </button>
+            <p class="food-card__scene">场景：夜市边走边吃</p>
+            <div class="food-card__detail" id="food-detail-4" hidden>
+              <p class="food-card__why">夜市体验感强，建议「少量多样」避免撑过头。</p>
+              <p class="food-card__again"><span class="tag tag--soft">二刷意愿</span> 可选 — 同类摊位多。</p>
+            </div>
+          </article>
+          <article class="food-card food-card--note">
+            <button type="button" class="food-card__toggle" aria-expanded="false" aria-controls="food-detail-5">
+              <span class="food-card__name">阿宗面线（个人向避雷）</span>
+              <span class="food-card__hint">展开</span>
+            </button>
+            <p class="food-card__scene">场景：西门町超红排队店</p>
+            <div class="food-card__detail" id="food-detail-5" hidden>
+              <p class="food-card__why">若不爱大肠、黏糊面线，这家「红」不等于「你一定爱」。排队也是成本，勇敢跳过不适合自己的网红，旅行更舒服。</p>
+              <p class="food-card__again"><span class="tag tag--soft">二刷意愿</span> 个人跳过；仅供参考。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7. 避坑建议（PRD 9.7） -->
+      <section class="section" id="tips" aria-labelledby="tipsTitle">
+        <div class="section__head">
+          <h2 class="section__title" id="tipsTitle">避坑与建议</h2>
+          <p class="section__lede">颜色 + 标签：必做 / 可选 / 避坑，避免只看颜色忽略文字。</p>
+        </div>
+        <ul class="tip-list">
+          <li class="tip-item tip-item--must">
+            <span class="tip-item__badge">必做</span>
+            <p><strong>现金一定要准备</strong>：夜市、小店、部分交通仍常用现金。</p>
+          </li>
+          <li class="tip-item tip-item--must">
+            <span class="tip-item__badge">必做</span>
+            <p><strong>公车票 / 热门段提前订</strong>：日月潭↔阿里山↔嘉义高铁站等段<strong>没票可能不让上车</strong>；日月潭船班、高铁衔接一起排进表。</p>
+          </li>
+          <li class="tip-item tip-item--must">
+            <span class="tip-item__badge">必做</span>
+            <p><strong>入境单 + 证件</strong>：与护照分开放；政策以出发前官方为准。</p>
+          </li>
+          <li class="tip-item tip-item--opt">
+            <span class="tip-item__badge">可选</span>
+            <p><strong>711 ATM 领现</strong>：除机场外可应急，注意手续费；现金仍建议分散存放。</p>
+          </li>
+          <li class="tip-item tip-item--opt">
+            <span class="tip-item__badge">可选</span>
+            <p><strong>跨城时间留宽松</strong>：避免「刚好赶上」造成全程焦虑。</p>
+          </li>
+          <li class="tip-item tip-item--opt">
+            <span class="tip-item__badge">可选</span>
+            <p><strong>回程班次要提前查</strong>：高铁、接驳与登机时间一起倒推。</p>
+          </li>
+          <li class="tip-item tip-item--pitfall">
+            <span class="tip-item__badge">避坑</span>
+            <p><strong>热门店不一定最好吃</strong>：综合评价与卫生，别为打卡排三小时。</p>
+          </li>
+          <li class="tip-item tip-item--pitfall">
+            <span class="tip-item__badge">避坑</span>
+            <p><strong>拍星空别乱开强光</strong>：避免扫到别人镜头；你的朋友圈很亮，别人的快门会哭。</p>
+          </li>
+          <li class="tip-item tip-item--pitfall">
+            <span class="tip-item__badge">避坑</span>
+            <p><strong>看萤火虫开红光</strong>：虫虫宝宝怕白光！开红光拍照才不会吓到它们。</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 8. 总结 CTA（PRD 9.8 / UI 文档 6.8） -->
+      <section class="section section--footer" id="summary" aria-labelledby="summaryTitle">
+        <div class="summary-card">
+          <h2 class="section__title" id="summaryTitle">总结与尾巴</h2>
+          <p class="section__lede">博主有感而发，不喜欢看可以直接跳过（Cry.jpg）</p>
+          <ol class="summary-top3">
+            <li><strong>路线骨架</strong>：城市烟火（台北）→ 淡水 → 九份 → 湖光（日月潭）→ 山林（阿里山）→ 桃园购物返程；移动日别排太满。</li>
+            <li><strong>现金 + 票</strong>：现金备足、跨城与景点交通先锁位；末班车算准，少上演「城市徒步耐力赛」。</li>
+            <li><strong>留一口喘气</strong>：攻略写具体（品都、天天利、葱爆山猪肉），避雷写诚实（阿宗面线个人向），别人更好抄作业。</li>
+          </ol>
+          <p class="summary-fit"><span class="tag tag--soft">适合谁</span> 第一次去台湾、愿意提前订票换现、能接受捷运+公车+高铁混搭的人。</p>
+          <div class="summary-reflection" aria-labelledby="reflectionTitle">
+            <h3 class="summary-reflection__title" id="reflectionTitle">人生感悟</h3>
+            <p>旅行和减肥很像：计划写得很漂亮，执行时全靠临场反应。你会遇到排队、延误、突然下雨，以及「地图说很近怎么走起来像越野」——但也会遇到一口卤肉饭的香、一片湖面的静、一串烧配生啤的爽。</p>
+            <p><strong>提前准备是为了少慌张，不是为了变成行走的时刻表。</strong>该订的票订好，该换的钱换够，该睡的觉别硬扛——计划外的瞬间，常常是回国后还会笑出来的部分。</p>
+            <p>毕竟人生不只有抵达：<strong>有时候绕一点路，才刚好遇见那家你愿意二刷的串烧店。</strong>
+            <p><strong>希望这篇攻略能帮助到你，祝你旅途愉快！</strong></p>
+            <p>如果有什么问题，欢迎在评论区留言，我会尽快回复。（评论功能正在开发中）</p>
+
+          </div>
+          <p class="summary-disclaimer">声明：票价、班次与开放状态以出发前官方及现场公告为准；长文详见仓库内 <code>台湾内容.md</code>。本站为静态 Demo，非旅行社服务。<br/>
+            博主会不定期更新攻略，欢迎大家关注博主小红书账号，第一时间获取最新攻略。</p>
+          <div class="summary-actions">
+            <a class="btn btn--primary" href="https://www.xiaohongshu.com/user/profile/5d42f5d600000000160338c8" target="_blank" rel="noopener noreferrer">查看完整攻略（小红书博主主页）</a>
+            <button type="button" class="btn btn--secondary" id="btnCopyRoute">复制路线骨架</button>
+            <a class="btn btn--outline" href="https://github.com/" target="_blank" rel="noopener noreferrer">访问 GitHub（替换为你的仓库）</a>
+          </div>
+          <p class="summary-note" id="toastArea" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>台湾 6 天 5 晚自由行互动攻略 Demo · 博主亲测不踩雷路线 · 周世杰 · 2026.05.15</p>
+    </footer>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>
