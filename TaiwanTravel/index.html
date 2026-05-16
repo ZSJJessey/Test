@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="台湾 6 天 5 晚自由行互动攻略 — 路线、准备事项与每日行程一览。" />
     <title>台湾 6 天 5 晚自由行互动攻略 Demo</title>
-    <link rel="stylesheet" href="./style.css" />
-    <link rel="preload" href="./assets/image/台湾属于中国.jpg" as="image" />
+    <link rel="stylesheet" href="./assets/styles/main.css" />
+    <link rel="stylesheet" href="./assets/styles/planner.css" />
+    <link rel="preload" href="./assets/images/台湾属于中国.jpg" as="image" />
   </head>
   <body>
     <a class="skip-link" href="#main">跳到主要内容</a>
@@ -29,7 +30,7 @@
           <div class="carousel" id="heroCarousel" role="region" aria-roledescription="轮播" aria-label="台湾旅行氛围图">
             <img
               class="carousel__img is-active"
-              src="./assets/image/台湾属于中国.jpg"
+              src="./assets/images/台湾属于中国.jpg"
               alt="台湾旅行氛围：城市与山海风光"
               width="1920"
               height="1080"
@@ -39,7 +40,7 @@
             />
             <img
               class="carousel__img"
-              src="./assets/image/101白天.png"
+              src="./assets/images/101白天.png"
               alt="台北 101 白昼天际线"
               width="1920"
               height="1080"
@@ -48,7 +49,7 @@
             />
             <img
               class="carousel__img"
-              src="./assets/image/台湾日月潭2.jpg"
+              src="./assets/images/台湾日月潭2.jpg"
               alt="日月潭湖光山色"
               width="1920"
               height="1080"
@@ -57,7 +58,7 @@
             />
             <img
               class="carousel__img"
-              src="./assets/image/阿里山1.jpg"
+              src="./assets/images/阿里山1.jpg"
               alt="阿里山森林铁路沿途风景"
               width="1920"
               height="1080"
@@ -66,7 +67,7 @@
             />
             <img
               class="carousel__img"
-              src="./assets/image/阿里山2.jpg"
+              src="./assets/images/阿里山2.jpg"
               alt="阿里山日出云海"
               width="1920"
               height="1080"
@@ -86,14 +87,158 @@
             <span class="chip chip--light" role="listitem">可抄作业</span>
           </div>
           <div class="hero__actions">
-            <a class="btn btn--primary" href="#timeline">查看路线</a>
+            <a class="btn btn--primary" href="#ai-planner">开始 AI 规划</a>
+            <a class="btn btn--secondary" href="#timeline">查看经典攻略</a>
             <button type="button" class="btn btn--ghost" id="btnExpandAll">展开全部行程</button>
           </div>
         </div>
       </section>
 
+      <section class="section section--planner" id="ai-planner" aria-labelledby="aiPlannerTitle">
+        <div class="section__head">
+          <h2 class="section__title" id="aiPlannerTitle">AI 行程规划助手</h2>
+          <p class="section__lede">填写约束条件，生成保守版 / 经典版 / 高效版三套可执行行程，并自动校验风险、支持导出。</p>
+        </div>
+
+        <form class="planner-form" id="plannerForm" novalidate>
+          <div class="planner-form__grid">
+            <label class="planner-field">
+              <span class="planner-field__label">出行天数</span>
+              <select name="days" required>
+                <option value="6" selected>6 天 5 晚（默认）</option>
+                <option value="5">5 天</option>
+                <option value="7">7 天</option>
+              </select>
+            </label>
+            <label class="planner-field">
+              <span class="planner-field__label">总预算（RMB/人，不含机票）</span>
+              <input type="number" name="budget" min="2000" max="20000" step="100" value="5000" required />
+            </label>
+            <label class="planner-field">
+              <span class="planner-field__label">是否第一次去台湾</span>
+              <select name="firstTime">
+                <option value="true" selected>是</option>
+                <option value="false">否</option>
+              </select>
+            </label>
+            <label class="planner-field">
+              <span class="planner-field__label">同行类型</span>
+              <select name="companion">
+                <option value="solo">单人</option>
+                <option value="friends" selected>朋友</option>
+                <option value="couple">情侣</option>
+                <option value="family">家庭</option>
+              </select>
+            </label>
+            <label class="planner-field">
+              <span class="planner-field__label">体力偏好</span>
+              <select name="stamina">
+                <option value="easy">轻松</option>
+                <option value="balanced" selected>平衡</option>
+                <option value="intense">高强度</option>
+              </select>
+            </label>
+            <label class="planner-field">
+              <span class="planner-field__label">住宿偏好</span>
+              <select name="lodging">
+                <option value="any" selected>无明确要求</option>
+                <option value="hostel">青旅</option>
+                <option value="hotel">酒店</option>
+                <option value="homestay">民宿</option>
+              </select>
+            </label>
+            <label class="planner-field">
+              <span class="planner-field__label">是否接受早起</span>
+              <select name="earlyBird">
+                <option value="true" selected>可以（含阿里山日出）</option>
+                <option value="false">不想早起</option>
+              </select>
+            </label>
+            <label class="planner-field">
+              <span class="planner-field__label">是否接受频繁换乘</span>
+              <select name="acceptTransfer">
+                <option value="false" selected>尽量少换乘</option>
+                <option value="true">可以接受</option>
+              </select>
+            </label>
+            <label class="planner-field">
+              <span class="planner-field__label">是否有购物需求</span>
+              <select name="shopping">
+                <option value="true" selected>有（含桃园 Outlet）</option>
+                <option value="false">无</option>
+              </select>
+            </label>
+            <label class="planner-field planner-field--full">
+              <span class="planner-field__label">必去景点（逗号分隔，可选）</span>
+              <input type="text" name="mustVisit" placeholder="例：渔人码头, 九份老街" />
+            </label>
+            <label class="planner-field planner-field--full">
+              <span class="planner-field__label">饮食忌口（可选）</span>
+              <input type="text" name="diet" placeholder="例：不吃牛、海鲜过敏" />
+            </label>
+          </div>
+
+          <fieldset class="planner-fieldset">
+            <legend>兴趣偏好（可多选）</legend>
+            <div class="planner-chips">
+              <label class="planner-chip"><input type="checkbox" name="interests" value="city" /> 城市逛吃</label>
+              <label class="planner-chip"><input type="checkbox" name="interests" value="nature" checked /> 自然风景</label>
+              <label class="planner-chip"><input type="checkbox" name="interests" value="photo" /> 拍照打卡</label>
+              <label class="planner-chip"><input type="checkbox" name="interests" value="night" checked /> 夜市</label>
+              <label class="planner-chip"><input type="checkbox" name="interests" value="food" checked /> 美食</label>
+              <label class="planner-chip"><input type="checkbox" name="interests" value="museum" /> 博物馆</label>
+              <label class="planner-chip"><input type="checkbox" name="interests" value="shop" /> 购物</label>
+            </div>
+          </fieldset>
+
+          <div class="planner-form__actions">
+            <button type="submit" class="btn btn--primary">生成 3 套行程方案</button>
+            <p class="planner-form__note">MVP 使用知识库 + 规则引擎生成；接入 LLM 后可替换 <code>TripPlanner</code> 实现。</p>
+          </div>
+        </form>
+
+        <p class="planner-toast" id="plannerToast" role="status" aria-live="polite"></p>
+        <div id="plannerResults" class="planner-results" hidden></div>
+        <div id="plannerDetail" class="planner-detail" hidden></div>
+      </section>
+
+      <dialog class="planner-dialog" id="plannerExplainDialog" hidden>
+        <div class="planner-dialog__inner">
+          <h3>为什么选这版</h3>
+          <div id="plannerExplainBody"></div>
+          <button type="button" class="btn btn--outline" data-close="plannerExplainDialog">关闭</button>
+        </div>
+      </dialog>
+
+      <dialog class="planner-dialog" id="plannerReplanDialog" hidden>
+        <div class="planner-dialog__inner">
+          <h3>重新规划</h3>
+          <form id="replanForm">
+            <label class="planner-field">降低预算（RMB）<input type="number" id="replanBudgetLower" min="0" step="100" placeholder="例：500" /></label>
+            <label class="planner-field">不去的景点<input type="text" id="replanSkipSpot" placeholder="例：九份" /></label>
+            <label class="planner-check"><input type="checkbox" id="replanNoEarly" /> 不想早起</label>
+            <label class="planner-check"><input type="checkbox" id="replanRelax" /> 改为轻松节奏</label>
+            <button type="submit" class="btn btn--primary">应用并重算</button>
+          </form>
+          <button type="button" class="btn btn--ghost" data-close="plannerReplanDialog">取消</button>
+        </div>
+      </dialog>
+
+      <dialog class="planner-dialog" id="plannerExportDialog" hidden>
+        <div class="planner-dialog__inner planner-dialog__inner--wide">
+          <h3 id="plannerExportTitle">导出</h3>
+          <textarea id="plannerExportText" class="planner-export__text" rows="14" readonly></textarea>
+          <div class="planner-dialog__actions">
+            <button type="button" class="btn btn--primary" id="btnCopyExport">复制全文</button>
+            <button type="button" class="btn btn--outline" data-close="plannerExportDialog">关闭</button>
+          </div>
+        </div>
+      </dialog>
+
+
       <nav class="page-toc" aria-label="页内导航">
         <ul class="page-toc__list">
+          <li><a class="page-toc__link" href="#ai-planner">AI 规划</a></li>
           <li><a class="page-toc__link" href="#overview">总览</a></li>
           <li><a class="page-toc__link" href="#prep">准备</a></li>
           <li><a class="page-toc__link" href="#timeline">时间线</a></li>
@@ -342,7 +487,7 @@
               <span class="day-card__chevron" aria-hidden="true"></span>
             </button>
             <div class="day-card__thumb-wrap">
-              <img class="day-card__thumb" src="./assets/image/台北车站.JPG" alt="Day1 台北车站" width="1200" height="800" loading="lazy" />
+              <img class="day-card__thumb" src="./assets/images/台北车站.JPG" alt="Day1 台北车站" width="1200" height="800" loading="lazy" />
             </div>
             <div class="day-card__panel" id="day-panel-1" hidden>
               <div class="day-sections">
@@ -390,7 +535,7 @@
               <span class="day-card__chevron" aria-hidden="true"></span>
             </button>
             <div class="day-card__thumb-wrap">
-              <img class="day-card__thumb" src="./assets/image/渔人码头.jpg" alt="Day2 渔人码头" width="1200" height="800" loading="lazy" />
+              <img class="day-card__thumb" src="./assets/images/渔人码头.jpg" alt="Day2 渔人码头" width="1200" height="800" loading="lazy" />
             </div>
             <div class="day-card__panel" id="day-panel-2" hidden>
               <div class="day-sections">
@@ -429,7 +574,7 @@
               <span class="day-card__chevron" aria-hidden="true"></span>
             </button>
             <div class="day-card__thumb-wrap">
-              <img class="day-card__thumb" src="./assets/image/九份老街1.jpg" alt="Day3 九份老街" width="1200" height="800" loading="lazy" />
+              <img class="day-card__thumb" src="./assets/images/九份老街1.jpg" alt="Day3 九份老街" width="1200" height="800" loading="lazy" />
             </div>
             <div class="day-card__panel" id="day-panel-3" hidden>
               <div class="day-sections">
@@ -473,7 +618,7 @@
               <span class="day-card__chevron" aria-hidden="true"></span>
             </button>
             <div class="day-card__thumb-wrap">
-              <img class="day-card__thumb" src="./assets/image/日月潭1.jpg" alt="Day4 日月潭" width="1200" height="800" loading="lazy" />
+              <img class="day-card__thumb" src="./assets/images/日月潭1.jpg" alt="Day4 日月潭" width="1200" height="800" loading="lazy" />
             </div>
             <div class="day-card__panel" id="day-panel-4" hidden>
               <div class="day-sections">
@@ -515,7 +660,7 @@
               <span class="day-card__chevron" aria-hidden="true"></span>
             </button>
             <div class="day-card__thumb-wrap">
-              <img class="day-card__thumb" src="./assets/image/阿里山4.jpg" alt="Day5 阿里山" width="1200" height="800" loading="lazy" />
+              <img class="day-card__thumb" src="./assets/images/阿里山4.jpg" alt="Day5 阿里山" width="1200" height="800" loading="lazy" />
             </div>
             <div class="day-card__panel" id="day-panel-5" hidden>
               <div class="day-sections">
@@ -559,7 +704,7 @@
               <span class="day-card__chevron" aria-hidden="true"></span>
             </button>
             <div class="day-card__thumb-wrap">
-              <img class="day-card__thumb" src="./assets/image/阿里山3.jpg" alt="Day6 阿里山日出与返程" width="1200" height="800" loading="lazy" />
+              <img class="day-card__thumb" src="./assets/images/阿里山3.jpg" alt="Day6 阿里山日出与返程" width="1200" height="800" loading="lazy" />
             </div>
             <div class="day-card__panel" id="day-panel-6" hidden>
               <div class="day-sections">
@@ -619,12 +764,13 @@
           <iframe
             class="route-map__embed"
             id="routeMapEmbed"
-            title="台湾 6 天行程地理概览（台北 · 淡水 · 九份 · 日月潭 · 阿里山 · 桃园）"
+            title="台湾 6 天行程地理概览（台北 · 淡水 · 国立故宫博物馆 · 九份 · 日月潭 · 阿里山 · 桃园）"
             src="https://maps.google.com/maps?q=%E5%8F%B0%E6%B9%BE&amp;ll=23.6978,120.9605&amp;hl=zh-CN&amp;z=8&amp;ie=UTF8&amp;iwloc=&amp;output=embed"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
             allowfullscreen
           ></iframe>
+    
           <p class="route-map__embed-note">
             嵌入地图为行程概览；iframe 内无法与上方节点按钮联动。节点「九份」在 Google 中定位已校正为<strong>台北车站</strong>（行程正文仍含九份）。交通与班次以 Google Maps 现场信息为准。
           </p>
@@ -632,7 +778,7 @@
             <a
               class="btn btn--outline route-map__maps-link"
               id="routeMapFullRoute"
-              href="https://www.google.com/maps/dir/?api=1&amp;hl=zh-CN&amp;origin=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4&amp;destination=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4&amp;waypoints=%E5%8F%B0%E5%8C%97%E8%BB%8A%E7%AB%99%7C%E6%B7%A1%E6%B0%B4%E6%BC%94%E4%BA%BA%E7%A2%BC%E9%A0%AD%7C%E5%8F%B0%E5%8C%97%E8%BB%8A%E7%AB%99%7C%E6%97%A5%E6%9C%88%E6%BD%AD%7C%E9%98%BF%E9%87%8C%E5%B1%B1&amp;travelmode=driving"
+              href="https://www.google.com/maps/dir/?api=1&amp;hl=zh-CN&amp;origin=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4&amp;destination=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4&amp;waypoints=%E5%8F%B0%E5%8C%97%E8%BB%8A%E7%AB%99%7C%E6%B8%94%E4%BA%BA%E7%A0%81%E5%A4%B4%7C%E6%B7%A1%E6%B0%B4%E8%80%81%E8%A1%97%7C%E5%9B%BD%E7%AB%8B%E6%95%85%E5%AE%AB%E5%8D%9A%E7%89%A9%E9%A6%86%7C%E4%B9%9D%E4%BB%BD%E8%80%81%E8%A1%97%7C%E6%97%A5%E6%9C%88%E6%BD%AD%7C%E9%98%BF%E9%87%8C%E5%B1%B1&amp;travelmode=driving"
               target="_blank"
               rel="noopener noreferrer"
             >在 Google Maps 中打开完整路线</a>
@@ -781,7 +927,7 @@
             <p>如果有什么问题，欢迎在评论区留言，我会尽快回复。（后端功能正在开发中）</p>
 
           </div>
-          <p class="summary-scope">本期为<strong>静态单页</strong>展示，含简易预算计算器与 Google 地图 iframe 概览；不含地图 JS API、登录后台；完整长文与素材维护见仓库 <code>台湾内容.md</code>。</p>
+          <p class="summary-scope">本期为<strong>静态单页</strong>，含 <strong>AI 行程规划 MVP</strong>（结构化输入、三版方案、规则校验、导出）、简易预算计算器与 Google 地图概览；不含真实 LLM 接口与登录后台。</p>
           <p class="summary-disclaimer">声明：票价、班次与开放状态以出发前官方及现场公告为准；长文详见仓库内 <code>台湾内容.md</code>。<br/>
             博主会不定期更新攻略，欢迎大家关注博主小红书账号，第一时间获取最新攻略。</p>
           <div class="summary-actions">
@@ -799,6 +945,11 @@
         周世杰 · 2026.05.15</p>
     </footer>
 
-    <script src="./script.js" defer></script>
+    <script src="./assets/scripts/planner/trip-knowledge.js" defer></script>
+    <script src="./assets/scripts/planner/trip-rules.js" defer></script>
+    <script src="./assets/scripts/planner/trip-planner.js" defer></script>
+    <script src="./assets/scripts/planner/trip-export.js" defer></script>
+    <script src="./assets/scripts/planner-ui.js" defer></script>
+    <script src="./assets/scripts/main.js" defer></script>
   </body>
 </html>

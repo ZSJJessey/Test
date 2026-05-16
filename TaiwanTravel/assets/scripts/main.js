@@ -16,6 +16,32 @@
     { label: "桃园", url: "https://www.google.com/maps/search/?api=1&hl=" + MAPS_HL + "&query=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4" },
   ];
 
+  var FULL_ROUTE_ORIGIN = "桃園國際機場";
+  var FULL_ROUTE_WAYPOINTS = [
+    "台北車站",
+    "渔人码头",
+    "淡水老街",
+    "国立故宫博物馆",
+    "九份老街",
+    "日月潭",
+    "阿里山",
+  ];
+
+  function buildFullRouteMapsUrl() {
+    var params = [
+      "api=1",
+      "hl=" + MAPS_HL,
+      "origin=" + encodeURIComponent(FULL_ROUTE_ORIGIN),
+      "destination=" + encodeURIComponent(FULL_ROUTE_ORIGIN),
+      "waypoints=" +
+        FULL_ROUTE_WAYPOINTS.map(function (place) {
+          return encodeURIComponent(place);
+        }).join("%7C"),
+      "travelmode=driving",
+    ];
+    return "https://www.google.com/maps/dir/?" + params.join("&");
+  }
+
   function $(sel, root) {
     return (root || document).querySelector(sel);
   }
@@ -207,6 +233,11 @@
 
   /* Default: highlight Day1 route */
   setActiveRouteIndex(0);
+
+  var routeMapFullRoute = $("#routeMapFullRoute");
+  if (routeMapFullRoute) {
+    routeMapFullRoute.href = buildFullRouteMapsUrl();
+  }
 
   /* Expand all */
   var expandBtn = $("#btnExpandAll");

@@ -1,0 +1,321 @@
+/* AI Planner (v2 MVP) */
+.section--planner {
+  background: linear-gradient(180deg, var(--sea-soft) 0%, transparent 42%);
+}
+
+.planner-form {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.planner-form__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .planner-form__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.planner-field--full {
+  grid-column: 1 / -1;
+}
+
+.planner-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.planner-field__label {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.planner-field input,
+.planner-field select {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.planner-fieldset {
+  margin: 1.25rem 0 0;
+  padding: 0.85rem 1rem;
+  border: 1px dashed var(--border-sea-35);
+  border-radius: var(--radius-md);
+}
+
+.planner-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.planner-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.planner-form__actions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.planner-form__note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.planner-toast {
+  min-height: 1.25rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--mountain);
+}
+
+.planner-results {
+  margin-top: 1.5rem;
+}
+
+.planner-results__hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.plan-cards {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  .plan-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.plan-card {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-sm);
+}
+
+.plan-card__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.plan-card__tagline {
+  margin: 0 0 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.plan-card__meta {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+}
+
+.plan-card__warn {
+  color: #c53030;
+  font-weight: 600;
+}
+
+.plan-card__audience {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.plan-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.btn--sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.planner-detail {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border-sea-35);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+}
+
+.planner-detail__risks {
+  margin: 1rem 0;
+}
+
+.planner-diff {
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  background: var(--sea-soft);
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+}
+
+.day-plan {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.day-plan__grid {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.35rem 0.75rem;
+  margin: 0.75rem 0;
+  font-size: 0.88rem;
+}
+
+.day-plan__grid dt {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.day-plan__grid dd {
+  margin: 0;
+}
+
+.day-plan__risks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.day-plan__why-panel {
+  margin-top: 0.5rem;
+  padding: 0.65rem;
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+}
+
+.planner-detail__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.risk-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.risk-list__item {
+  margin-bottom: 0.75rem;
+  padding: 0.65rem;
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.risk-tag {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.risk-tag--high {
+  background: rgba(197, 48, 48, 0.12);
+  color: #c53030;
+}
+
+.risk-tag--medium {
+  background: rgba(221, 107, 32, 0.12);
+  color: #c05621;
+}
+
+.risk-tag--low {
+  background: var(--mountain-soft);
+  color: var(--mountain);
+}
+
+.planner-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  margin: auto;
+  max-width: 32rem;
+  width: calc(100% - 2rem);
+  max-height: 90vh;
+  overflow: auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-md);
+}
+
+.planner-dialog[hidden] {
+  display: none;
+}
+
+.planner-dialog__inner {
+  padding: 1.25rem;
+}
+
+.planner-dialog__inner--wide {
+  max-width: 40rem;
+}
+
+.planner-export__text {
+  width: 100%;
+  margin: 0.75rem 0;
+  padding: 0.65rem;
+  font: inherit;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  resize: vertical;
+}
+
+.planner-dialog__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.planner-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
