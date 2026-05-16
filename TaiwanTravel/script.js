@@ -5,6 +5,17 @@
     "台北 → 淡水 → 九份 → 日月潭 → 阿里山 → 桃园\n" +
     "Day1 抵达·西门町·象山 | Day2 淡水 | Day3 故宫·九份 | Day4 日月潭 | Day5 阿里山 | Day6 日出·返程·桃园";
 
+  /* 路线节点文案与地图关键词对照见 README；index 2 为「九份」行程，地图用台北车站 */
+  var MAPS_HL = "zh-CN";
+  var ROUTE_MAP_PLACES = [
+    { label: "台北", url: "https://www.google.com/maps/search/?api=1&hl=" + MAPS_HL + "&query=%E5%8F%B0%E5%8C%97%E8%BB%8A%E7%AB%99" },
+    { label: "淡水", url: "https://www.google.com/maps/search/?api=1&hl=" + MAPS_HL + "&query=%E6%B7%A1%E6%B0%B4%E6%BC%94%E4%BA%BA%E7%A2%BC%E9%A0%AD" },
+    { label: "台北车站", url: "https://www.google.com/maps/search/?api=1&hl=" + MAPS_HL + "&query=%E5%8F%B0%E5%8C%97%E8%BB%8A%E7%AB%99" },
+    { label: "日月潭", url: "https://www.google.com/maps/search/?api=1&hl=" + MAPS_HL + "&query=%E6%97%A5%E6%9C%88%E6%BD%AD" },
+    { label: "阿里山", url: "https://www.google.com/maps/search/?api=1&hl=" + MAPS_HL + "&query=%E9%98%BF%E9%87%8C%E5%B1%B1%E5%9C%8B%E5%AE%B6%E6%A3%AE%E6%9E%97%E9%81%93" },
+    { label: "桃园", url: "https://www.google.com/maps/search/?api=1&hl=" + MAPS_HL + "&query=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4" },
+  ];
+
   function $(sel, root) {
     return (root || document).querySelector(sel);
   }
@@ -96,10 +107,20 @@
   /* Day accordion + route sync */
   var dayCards = $$(".day-card");
   var routeNodes = $$(".route-node");
+  var routeMapOpenCurrent = $("#routeMapOpenCurrent");
+
+  function updateRouteMapLink(index) {
+    if (!routeMapOpenCurrent || !ROUTE_MAP_PLACES[index]) return;
+    var place = ROUTE_MAP_PLACES[index];
+    routeMapOpenCurrent.href = place.url;
+    routeMapOpenCurrent.textContent = "在 Google Maps 中打开：" + place.label;
+  }
 
   function setActiveRouteIndex(index) {
     var idx = parseInt(String(index), 10);
     if (Number.isNaN(idx)) return;
+
+    updateRouteMapLink(idx);
 
     routeNodes.forEach(function (node, i) {
       var on = i === idx;
@@ -352,5 +373,129 @@
 
     showSlide(0);
     startCarousel();
+  }
+
+  /* Budget calculator */
+  var budgetToggle = $("#budgetCalcToggle");
+  var budgetPanel = $("#budgetCalcPanel");
+  var budgetClose = $("#budgetCalcClose");
+  var budgetForm = $("#budgetCalcForm");
+  var budgetCalcRoot = $("#budgetCalc");
+  var budgetPerPerson = $("#budgetPerPerson");
+  var budgetGroupLine = $("#budgetGroupLine");
+  var budgetTwdLine = $("#budgetTwdLine");
+  var TRIP_DAYS = 6;
+  var TRIP_NIGHTS = 5;
+
+  function parseNum(val, fallback) {
+    var n = parseFloat(String(val));
+    return Number.isFinite(n) && n >= 0 ? n : fallback;
+  }
+
+  function formatRmb(amount) {
+    return "¥" + Math.round(amount).toLocaleString("zh-CN");
+  }
+
+  function formatTwd(amount) {
+    return "NT$" + Math.round(amount).toLocaleString("zh-CN");
+  }
+
+  function readBudgetForm() {
+    if (!budgetForm) return null;
+    var fd = new FormData(budgetForm);
+    return {
+      people: Math.min(10, Math.max(1, parseNum(fd.get("people"), 1))),
+      rate: Math.max(3, parseNum(fd.get("rate"), 4.6)),
+      stayPerNight: parseNum(fd.get("stay"), 280),
+      foodDaily: parseNum(fd.get("foodDaily"), 150),
+      transit: parseNum(fd.get("transit"), 800),
+      easyCard: parseNum(fd.get("easyCard"), 1000),
+      cash: parseNum(fd.get("cash"), 7000),
+      sim: parseNum(fd.get("sim"), 120),
+      extra: parseNum(fd.get("extra"), 400),
+    };
+  }
+
+  function computeBudget(data) {
+    var stayRmb = data.stayPerNight * TRIP_NIGHTS;
+    var foodRmb = data.foodDaily * TRIP_DAYS;
+    var twdPerPerson = data.easyCard + data.cash;
+    var twdToRmb = twdPerPerson / data.rate;
+    var rmbPerPerson =
+      stayRmb + foodRmb + data.transit + data.sim + data.extra + twdToRmb;
+    var groupRmb = rmbPerPerson * data.people;
+    return {
+      rmbPerPerson: rmbPerPerson,
+      groupRmb: groupRmb,
+      twdPerPerson: twdPerPerson,
+      people: data.people,
+    };
+  }
+
+  function renderBudget() {
+    var data = readBudgetForm();
+    if (!data || !budgetPerPerson) return;
+    var result = computeBudget(data);
+    budgetPerPerson.textContent = formatRmb(result.rmbPerPerson);
+    if (budgetGroupLine) {
+      budgetGroupLine.textContent =
+        data.people > 1
+          ? data.people + " 人合计约 " + formatRmb(result.groupRmb)
+          : "单人行程合计与人均相同";
+    }
+    if (budgetTwdLine) {
+      budgetTwdLine.textContent =
+        "台币现金项 " +
+        formatTwd(result.twdPerPerson) +
+        " / 人（悠游卡+现金，按汇率 " +
+        data.rate +
+        " 折算）";
+    }
+  }
+
+  function setBudgetOpen(open) {
+    if (!budgetPanel || !budgetToggle) return;
+    if (open) {
+      budgetPanel.removeAttribute("hidden");
+      budgetToggle.setAttribute("aria-expanded", "true");
+      renderBudget();
+    } else {
+      budgetPanel.setAttribute("hidden", "");
+      budgetToggle.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  if (budgetToggle && budgetPanel && budgetForm) {
+    budgetToggle.addEventListener("click", function () {
+      var isOpen = budgetToggle.getAttribute("aria-expanded") === "true";
+      setBudgetOpen(!isOpen);
+    });
+
+    if (budgetClose) {
+      budgetClose.addEventListener("click", function () {
+        setBudgetOpen(false);
+        budgetToggle.focus();
+      });
+    }
+
+    budgetForm.addEventListener("input", renderBudget);
+    budgetForm.addEventListener("change", renderBudget);
+
+    document.addEventListener("click", function (ev) {
+      if (
+        budgetToggle.getAttribute("aria-expanded") === "true" &&
+        budgetCalcRoot &&
+        !budgetCalcRoot.contains(ev.target)
+      ) {
+        setBudgetOpen(false);
+      }
+    });
+
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && budgetToggle.getAttribute("aria-expanded") === "true") {
+        setBudgetOpen(false);
+        budgetToggle.focus();
+      }
+    });
   }
 })();

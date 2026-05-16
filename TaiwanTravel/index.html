@@ -28,36 +28,37 @@
           <!-- 轮播图开始 -->
           <div class="carousel" id="heroCarousel" role="region" aria-roledescription="轮播" aria-label="台湾旅行氛围图">
             <img
-              class="carousel__img"
+              class="carousel__img is-active"
               src="./assets/image/台湾属于中国.jpg"
-              alt="台湾属于中国"
+              alt="台湾旅行氛围：城市与山海风光"
               width="1920"
               height="1080"
-              loading="lazy"
+              loading="eager"
+              fetchpriority="high"
               decoding="async"
             />
             <img
               class="carousel__img"
               src="./assets/image/101白天.png"
-              alt="101"
+              alt="台北 101 白昼天际线"
               width="1920"
               height="1080"
               loading="lazy"
               decoding="async"
             />
             <img
-            class="carousel__img"
-            src="./assets/image/台湾日月潭2.jpg"
-            alt="日月潭景色"
-            width="1920"
-            height="1080"
-            loading="lazy"
-            decoding="async"
-          />
+              class="carousel__img"
+              src="./assets/image/台湾日月潭2.jpg"
+              alt="日月潭湖光山色"
+              width="1920"
+              height="1080"
+              loading="lazy"
+              decoding="async"
+            />
             <img
               class="carousel__img"
               src="./assets/image/阿里山1.jpg"
-              alt="阿里山火车沿途风景"
+              alt="阿里山森林铁路沿途风景"
               width="1920"
               height="1080"
               loading="lazy"
@@ -66,7 +67,7 @@
             <img
               class="carousel__img"
               src="./assets/image/阿里山2.jpg"
-              alt="阿里山日出"
+              alt="阿里山日出云海"
               width="1920"
               height="1080"
               loading="lazy"
@@ -90,6 +91,17 @@
           </div>
         </div>
       </section>
+
+      <nav class="page-toc" aria-label="页内导航">
+        <ul class="page-toc__list">
+          <li><a class="page-toc__link" href="#overview">总览</a></li>
+          <li><a class="page-toc__link" href="#prep">准备</a></li>
+          <li><a class="page-toc__link" href="#timeline">时间线</a></li>
+          <li><a class="page-toc__link" href="#route">路线</a></li>
+          <li><a class="page-toc__link" href="#tips">避坑</a></li>
+          <li><a class="page-toc__link" href="#summary">总结</a></li>
+        </ul>
+      </nav>
 
       <!-- 2. 总览 -->
       <section class="section section--tight" id="overview" aria-labelledby="overviewTitle">
@@ -124,6 +136,94 @@
                 <span class="pill">日出</span>
               </div>
             </article>
+            <article class="stat-card stat-card--wide stat-card--budget">
+              <p class="stat-card__label">预算感参考（不含往返机票）</p>
+              <div class="stat-card__body">
+                <p class="stat-card__value stat-card__value--sm stat-card__intro">
+                  人均约 <strong>4000–6000 RMB</strong> 可作心理区间（住宿档次、购物与汇率会浮动）。
+                  落地可备：<strong>悠游卡约 1000 台币</strong>、<strong>现金约 7000 台币</strong>、电话卡约 <strong>100+ RMB</strong>（均以现场/柜台为准）。
+                </p>
+                <aside class="budget-calc" id="budgetCalc" aria-label="简易预算计算器">
+                  <button
+                    type="button"
+                    class="budget-calc__trigger"
+                    id="budgetCalcToggle"
+                    aria-expanded="false"
+                    aria-controls="budgetCalcPanel"
+                  >
+                    算算预算
+                  </button>
+                  <div
+                    class="budget-calc__panel"
+                    id="budgetCalcPanel"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="budgetCalcTitle"
+                    hidden
+                  >
+                    <div class="budget-calc__panel-head">
+                      <h3 class="budget-calc__title" id="budgetCalcTitle">简易预算计算器</h3>
+                      <button type="button" class="budget-calc__close" id="budgetCalcClose" aria-label="关闭计算器">×</button>
+                    </div>
+                    <p class="budget-calc__hint">不含往返机票；台币项按下方汇率折算，结果仅供参考。</p>
+                    <form class="budget-calc__form" id="budgetCalcForm">
+                      <div class="budget-calc__row budget-calc__row--2">
+                        <label class="budget-calc__field">
+                          <span class="budget-calc__label">人数</span>
+                          <input type="number" name="people" min="1" max="10" value="1" inputmode="numeric" />
+                        </label>
+                        <label class="budget-calc__field">
+                          <span class="budget-calc__label">汇率（1 元≈台币）</span>
+                          <input type="number" name="rate" min="3" max="6" step="0.01" value="4.6" inputmode="decimal" />
+                        </label>
+                      </div>
+                      <label class="budget-calc__field">
+                        <span class="budget-calc__label">住宿档次（5 晚 / 人，人民币）</span>
+                        <select name="stay">
+                          <option value="150">经济 · 约 200/晚</option>
+                          <option value="280" selected>中档 · 约 300/晚</option>
+                          <option value="450">舒适 · 约 1000/晚</option>
+                        </select>
+                      </label>
+                      <div class="budget-calc__row budget-calc__row--2">
+                        <label class="budget-calc__field">
+                          <span class="budget-calc__label">餐饮（6 天 / 人 / 天）</span>
+                          <input type="number" name="foodDaily" min="50" max="800" step="10" value="150" inputmode="numeric" />
+                        </label>
+                        <label class="budget-calc__field">
+                          <span class="budget-calc__label">跨城交通（人）</span>
+                          <input type="number" name="transit" min="0" max="5000" step="50" value="800" inputmode="numeric" />
+                        </label>
+                      </div>
+                      <div class="budget-calc__row budget-calc__row--3">
+                        <label class="budget-calc__field">
+                          <span class="budget-calc__label">悠游卡（台币）</span>
+                          <input type="number" name="easyCard" min="0" max="20000" step="100" value="1000" inputmode="numeric" />
+                        </label>
+                        <label class="budget-calc__field">
+                          <span class="budget-calc__label">现金（台币）</span>
+                          <input type="number" name="cash" min="0" max="50000" step="500" value="7000" inputmode="numeric" />
+                        </label>
+                        <label class="budget-calc__field">
+                          <span class="budget-calc__label">电话卡（元）</span>
+                          <input type="number" name="sim" min="0" max="500" step="10" value="120" inputmode="numeric" />
+                        </label>
+                      </div>
+                      <label class="budget-calc__field">
+                        <span class="budget-calc__label">购物与其他（人）</span>
+                        <input type="number" name="extra" min="0" max="20000" step="100" value="400" inputmode="numeric" />
+                      </label>
+                    </form>
+                    <div class="budget-calc__result" id="budgetCalcResult" aria-live="polite">
+                      <p class="budget-calc__total"><span>人均约</span> <strong id="budgetPerPerson">—</strong></p>
+                      <p class="budget-calc__sub" id="budgetGroupLine">—</p>
+                      <p class="budget-calc__sub" id="budgetTwdLine">—</p>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </article>
+
           </div>
         </div>
       </section>
@@ -132,7 +232,7 @@
       <section class="section" id="prep" aria-labelledby="prepTitle">
         <div class="section__head">
           <h2 class="section__title" id="prepTitle">出发前准备</h2>
-          <p class="section__lede">证件、交通、支付与工具（记得提前锁住宿与跨城票！！！）。</p>
+          <p class="section__lede">证件、交通、支付与工具。</p>
         </div>
         <div class="tabs" data-tabs>
           <div class="tabs__list" role="tablist" aria-label="准备事项分类">
@@ -155,7 +255,7 @@
                   <div class="info-card__icon" aria-hidden="true">✎</div>
                   <div>
                     <h3 class="info-card__title">入境材料与入境单</h3>
-                    <p class="info-card__text">护照、符合政策的入境与健康申报（若有）、<strong>入境单</strong>（机上或落地前填好；电子版即可）。政策会变，出发前以<strong>航司与官方说明</strong>为准——官方通常比小红书更不容易翻车。</p>
+                    <p class="info-card__text">护照、符合政策的入境与健康申报（若有）、<strong>入境单</strong>（机上或落地前填好；电子版即可）。政策会变，出发前以<strong>航司与台湾移民署等官方说明</strong>为准（可检索「台湾 入境 规定」获取最新页面）。面向留学生/自由行旅客时，证件类型以出发前官方为准。</p>
                   </div>
                 </li>
               </ul>
@@ -173,7 +273,7 @@
                   <div class="info-card__icon" aria-hidden="true">▸</div>
                   <div>
                     <h3 class="info-card__title">高铁、公车与末班</h3>
-                    <p class="info-card__text">跨城（如台北→台中再转日月潭）走<strong>高铁 + 公车</strong>衔接。往日月潭、阿里山等热门段务必<strong>提前订票</strong>。用地图记<strong>末班捷运/公车</strong>，避免夜景看完变「城市徒步耐力赛」。</p>
+                    <p class="info-card__text">跨城（如台北→台中再转日月潭）走<strong>高铁 + 公车</strong>衔接。往日月潭、阿里山等热门段务必<strong>提前订票</strong>（热门段建议出发前 <strong>1–2 周</strong>锁位）。检索关键词示例：<strong>「台湾高铁」</strong>、<strong>「日月潭 阿里山 联营公车」</strong>、<strong>「日月潭 船票」</strong>；船班与公车表以现场公告为准。用地图记<strong>末班捷运/公车</strong>，避免夜景看完变「城市徒步耐力赛」。</p>
                   </div>
                 </li>
               </ul>
@@ -215,6 +315,13 @@
                     <p class="info-card__text">日月潭↔阿里山公车↔高铁、萤火虫星空团、日出团等设<strong>日历提醒</strong>。跨城段预留缓冲：<strong>人生可以赶，车不等你</strong>；船班、公车表以现场公告为准。</p>
                   </div>
                 </li>
+                <li class="info-card">
+                  <div class="info-card__icon" aria-hidden="true">☀</div>
+                  <div>
+                    <h3 class="info-card__title">季节与装备</h3>
+                    <p class="info-card__text"><strong>10–4 月</strong>较适合环湖与登山；<strong>5–9 月</strong>多雨，备轻便雨具。阿里山昼夜温差大，Day5–6 建议<strong>外套 + 防滑鞋</strong>；日出团清晨冷，薄羽绒或抓绒比「硬扛」更体面。</p>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -250,7 +357,7 @@
    
                 <section class="day-block">
                   <h3 class="day-block__title">上午 · 入境与入住</h3>
-                  <p>入境、领行李后完成办卡换汇，<strong>刷悠游卡搭捷运</strong>进城。订不到「星空旅舍」时，<strong>WORK INN</strong> 可作环境还不错的替代。第一天以安顿为主，别把体力条在第一格就刷满。</p>
+                  <p>入境、领行李后完成办卡换汇，<strong>刷悠游卡搭捷运</strong>进城。住宿优先<strong>台北车站 / 西门町一带</strong>：近捷运、晚上去象山与夜市都顺。订不到「星空旅舍」时，<strong>WORK INN</strong> 可作环境还不错的替代。第一天以安顿为主，别把体力条在第一格就刷满。</p>
                 </section>
                 <section class="day-block">
                   <h3 class="day-block__title">下午 · 西门町</h3>
@@ -289,7 +396,7 @@
               <div class="day-sections">
                 <section class="day-block">
                   <h3 class="day-block__title">住宿 · 星空旅舍</h3>
-                  <p>这一晚强推<strong>星空旅舍</strong>：干净、设施好，旺季务必提早订。订不到时心理预期要准备好「与替代方案互相安慰」。</p>
+                  <p>这一晚强推<strong>星空旅舍</strong>（台北、近捷运与淡水线）：干净、设施好，旺季务必提早订。订不到时心理预期要准备好「与替代方案互相安慰」。</p>
                 </section>
                 <section class="day-block">
                   <h3 class="day-block__title">上午 · 渔人码头</h3>
@@ -328,7 +435,7 @@
               <div class="day-sections">
                 <section class="day-block">
                   <h3 class="day-block__title">住宿 · 星空旅舍</h3>
-                  <p>第二晚续住，行李不搬，幸福感 +10086（人均250+rmb，越早订越便宜）。</p>
+                  <p>第二晚续住同一区域，<strong>近故宫—九份公车动线</strong>，行李不搬，幸福感 +10086（人均 250+ RMB，越早订越便宜）。</p>
                 </section>
                 <section class="day-block">
                   <h3 class="day-block__title">上午 · 国立故宫博物院</h3>
@@ -372,7 +479,7 @@
               <div class="day-sections">
                 <section class="day-block">
                   <h3 class="day-block__title">住宿 · 湖悦景观旅店</h3>
-                  <p>携程可订<strong>南投日月潭湖悦景观旅店</strong>。湖景吃天气：晴天像明信片，阴天像忘了付费的滤镜——心态放平，湖还是那片湖。</p>
+                  <p>携程可订<strong>南投日月潭湖悦景观旅店</strong>（水社码头 / 游船接驳方便）。湖景吃天气：晴天像明信片，阴天像忘了付费的滤镜——心态放平，湖还是那片湖。</p>
                 </section>
                 <section class="day-block">
                   <h3 class="day-block__title">上午 · 高铁与衔接票</h3>
@@ -414,7 +521,7 @@
               <div class="day-sections">
                 <section class="day-block">
                   <h3 class="day-block__title">住宿 · 阿里山旅舍</h3>
-                  <p>携程 / 小红书挑口碑店；山区重点：<strong>保暖、接驳、早餐、隔音</strong>。睡得好，隔日看日出才像「被风景叫醒」。</p>
+                  <p>携程 / 小红书挑口碑店（<strong>阿里山景区内或车站接驳点</strong>）；山区重点：<strong>保暖、接驳、早餐、隔音</strong>。睡得好，隔日看日出才像「被风景叫醒」。</p>
                 </section>
                 <section class="day-block">
                   <h3 class="day-block__title">上午 · 日月潭 → 阿里山公车（关键）</h3>
@@ -490,18 +597,53 @@
       <section class="section" id="route" aria-labelledby="routeTitle">
         <div class="section__head">
           <h2 class="section__title" id="routeTitle">路线一览</h2>
-          <p class="section__lede">城市顺序与正文一致；节点对应 Day1–Day6 关键城市。</p>
+          <p class="section__lede">城市顺序与正文一致；节点对应 Day1–Day6。下方为 Google 地图概览（iframe 嵌入），完整导航请用外链打开。</p>
         </div>
         <div class="route-map" data-route-map aria-label="行程城市顺序">
           <div class="route-map__track" aria-hidden="true"></div>
           <ol class="route-map__nodes">
             <li><button type="button" class="route-node is-active" data-route-index="0" aria-current="true">台北</button></li>
             <li><button type="button" class="route-node" data-route-index="1">淡水</button></li>
-            <li><button type="button" class="route-node" data-route-index="2">九份</button></li>
+            <li><button type="button" class="route-node" data-route-index="2" data-maps-place="台北车站">九份</button></li>
             <li><button type="button" class="route-node" data-route-index="3">日月潭</button></li>
             <li><button type="button" class="route-node" data-route-index="4">阿里山</button></li>
             <li><button type="button" class="route-node" data-route-index="5">桃园</button></li>
           </ol>
+        </div>
+        <div class="route-map__embed-wrap">
+          <!--
+            方案 1：Google 地图 iframe。若已用「我的地图」做好 6 站路线，
+            将下方 iframe 的 src 整段替换为：我的地图 → 分享 → 嵌入地图 的 URL。
+            默认第 3 站关键词为「台北车站」（非九份老街坐标）；行程正文 Day3 仍写九份。
+          -->
+          <iframe
+            class="route-map__embed"
+            id="routeMapEmbed"
+            title="台湾 6 天行程地理概览（台北 · 淡水 · 九份 · 日月潭 · 阿里山 · 桃园）"
+            src="https://maps.google.com/maps?q=%E5%8F%B0%E6%B9%BE&amp;ll=23.6978,120.9605&amp;hl=zh-CN&amp;z=8&amp;ie=UTF8&amp;iwloc=&amp;output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+          <p class="route-map__embed-note">
+            嵌入地图为行程概览；iframe 内无法与上方节点按钮联动。节点「九份」在 Google 中定位已校正为<strong>台北车站</strong>（行程正文仍含九份）。交通与班次以 Google Maps 现场信息为准。
+          </p>
+          <div class="route-map__embed-actions">
+            <a
+              class="btn btn--outline route-map__maps-link"
+              id="routeMapFullRoute"
+              href="https://www.google.com/maps/dir/?api=1&amp;hl=zh-CN&amp;origin=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4&amp;destination=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4&amp;waypoints=%E5%8F%B0%E5%8C%97%E8%BB%8A%E7%AB%99%7C%E6%B7%A1%E6%B0%B4%E6%BC%94%E4%BA%BA%E7%A2%BC%E9%A0%AD%7C%E5%8F%B0%E5%8C%97%E8%BB%8A%E7%AB%99%7C%E6%97%A5%E6%9C%88%E6%BD%AD%7C%E9%98%BF%E9%87%8C%E5%B1%B1&amp;travelmode=driving"
+              target="_blank"
+              rel="noopener noreferrer"
+            >在 Google Maps 中打开完整路线</a>
+            <a
+              class="btn btn--outline route-map__maps-link"
+              id="routeMapOpenCurrent"
+              href="https://www.google.com/maps/search/?api=1&amp;hl=zh-CN&amp;query=%E5%8F%B0%E5%8C%97%E8%BB%8A%E7%AB%99"
+              target="_blank"
+              rel="noopener noreferrer"
+            >在 Google Maps 中打开：台北</a>
+          </div>
         </div>
       </section>
 
@@ -521,6 +663,7 @@
             <p class="food-card__scene">场景：台北宵夜 · 西门町一带</p>
             <div class="food-card__detail" id="food-detail-1" hidden>
               <p class="food-card__why">串烧 + 生啤是个人榜 Top1；炭火香气足、选择多，Day1 夜宵与 Day2 淡水后都值得回访。</p>
+              <p class="food-card__meta"><span class="tag tag--soft">人均</span> 约 200–350 台币 · <span class="tag tag--soft">排队</span> 高峰常 30 分钟+，可错峰或改时段</p>
               <p class="food-card__again"><span class="tag tag--soft">二刷意愿</span> 真心会二刷；排队久可改时段。</p>
             </div>
           </article>
@@ -532,6 +675,7 @@
             <p class="food-card__scene">场景：西门町白天简餐</p>
             <div class="food-card__detail" id="food-detail-2" hidden>
               <p class="food-card__why">扎实卤肉饭，快速吃饱再逛街；比排队网红更符合「抄作业效率」。</p>
+              <p class="food-card__meta"><span class="tag tag--soft">人均</span> 约 80–120 台币 · <span class="tag tag--soft">排队</span> 午市较短，不必订位</p>
               <p class="food-card__again"><span class="tag tag--soft">二刷意愿</span> 强推；看排队可评估外带。</p>
             </div>
           </article>
@@ -623,7 +767,7 @@
           <h2 class="section__title" id="summaryTitle">总结与尾巴</h2>
           <p class="section__lede">博主有感而发，不喜欢看可以直接跳过（Cry.jpg）</p>
           <ol class="summary-top3">
-            <li><strong>路线骨架</strong>：城市烟火（台北）→ 淡水 → 九份 → 湖光（日月潭）→ 山林（阿里山）→ 桃园购物返程；移动日别排太满。</li>
+            <li><strong>路线骨架</strong>：城市烟火（台北）→ 淡水 → 人文（博物馆） → 九份 → 湖光（日月潭）→ 山林（阿里山）→ 桃园购物返程；移动日别排太满。</li>
             <li><strong>现金 + 票</strong>：现金备足、跨城与景点交通先锁位；末班车算准，少上演「城市徒步耐力赛」。</li>
             <li><strong>留一口喘气</strong>：攻略写具体（品都、天天利、葱爆山猪肉），避雷写诚实（阿宗面线个人向），别人更好抄作业。</li>
           </ol>
@@ -632,11 +776,12 @@
             <h3 class="summary-reflection__title" id="reflectionTitle">人生感悟</h3>
             <p>旅行和减肥很像：计划写得很漂亮，执行时全靠临场反应。你会遇到排队、延误、突然下雨，以及「地图说很近怎么走起来像越野」——但也会遇到一口卤肉饭的香、一片湖面的静、一串烧配生啤的爽。</p>
             <p><strong>提前准备是为了少慌张，不是为了变成行走的时刻表。</strong>该订的票订好，该换的钱换够，该睡的觉别硬扛——计划外的瞬间，常常是回国后还会笑出来的部分。</p>
-            <p>毕竟人生不只有抵达：<strong>有时候绕一点路，才刚好遇见那家你愿意二刷的串烧店。</strong>
+            <p>毕竟人生不只有抵达：<strong>有时候绕一点路，才刚好遇见那家你愿意二刷的串烧店。</strong></p>
             <p><strong>希望这篇攻略能帮助到你，祝你旅途愉快！</strong></p>
             <p>如果有什么问题，欢迎在评论区留言，我会尽快回复。（后端功能正在开发中）</p>
 
           </div>
+          <p class="summary-scope">本期为<strong>静态单页</strong>展示，含简易预算计算器与 Google 地图 iframe 概览；不含地图 JS API、登录后台；完整长文与素材维护见仓库 <code>台湾内容.md</code>。</p>
           <p class="summary-disclaimer">声明：票价、班次与开放状态以出发前官方及现场公告为准；长文详见仓库内 <code>台湾内容.md</code>。<br/>
             博主会不定期更新攻略，欢迎大家关注博主小红书账号，第一时间获取最新攻略。</p>
           <div class="summary-actions">
