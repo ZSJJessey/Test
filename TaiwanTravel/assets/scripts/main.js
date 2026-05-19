@@ -212,6 +212,16 @@
     });
   });
 
+  function flashRouteHint(message) {
+    var hint = $("#routeHint");
+    if (!hint) return;
+    if (message) hint.textContent = message;
+    hint.classList.add("is-flash");
+    window.setTimeout(function () {
+      hint.classList.remove("is-flash");
+    }, 2800);
+  }
+
   routeNodes.forEach(function (node, i) {
     node.addEventListener("click", function () {
       setActiveRouteIndex(i);
@@ -228,8 +238,52 @@
         });
         scrollToEl(target);
       }
+      var label = node.textContent.replace(/\s+/g, " ").trim();
+      var hubNote = node.classList.contains("route-node--hub") ? "（地图定位台北车站枢纽）" : "";
+      flashRouteHint(
+        "已选中「" +
+          label +
+          "」" +
+          hubNote +
+          "：已跳转 Day " +
+          (i + 1) +
+          "。嵌入地图不变，请用下方「在 Google Maps 中打开」按钮导航。"
+      );
     });
   });
+
+  $$(".day-card__map-link").forEach(function (link) {
+    link.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+    });
+  });
+
+  /* Sticky TOC: highlight current section */
+  var tocLinks = $$("[data-toc]");
+  if (tocLinks.length && "IntersectionObserver" in window) {
+    var tocSections = [];
+    tocLinks.forEach(function (link) {
+      var id = (link.getAttribute("href") || "").replace(/^#/, "");
+      var sec = id ? document.getElementById(id) : null;
+      if (sec) tocSections.push({ id: id, el: sec, link: link });
+    });
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var sid = entry.target.id;
+          tocLinks.forEach(function (l) {
+            var on = (l.getAttribute("href") || "") === "#" + sid;
+            l.classList.toggle("is-active", on);
+          });
+        });
+      },
+      { rootMargin: "-25% 0px -55% 0px", threshold: 0.05 }
+    );
+    tocSections.forEach(function (item) {
+      observer.observe(item.el);
+    });
+  }
 
   /* Default: highlight Day1 route */
   setActiveRouteIndex(0);

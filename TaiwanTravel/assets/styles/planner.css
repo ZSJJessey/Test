@@ -75,6 +75,31 @@
   cursor: pointer;
 }
 
+.planner-form__intro {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.planner-form__advanced {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+
+.planner-form__advanced summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--sea);
+}
+
+.planner-form__advanced[open] summary {
+  margin-bottom: 0.75rem;
+}
+
 .planner-form__actions {
   margin-top: 1.25rem;
   display: flex;
@@ -82,9 +107,27 @@
   gap: 0.5rem;
 }
 
-.planner-form__note {
+.planner-relationship {
+  margin: 1rem 0;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--mountain-soft);
+  border: 1px solid var(--tip-border-mountain);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.planner-relationship p {
   margin: 0;
-  font-size: 0.8rem;
+}
+
+.planner-relationship--inline {
+  margin-top: 1rem;
+}
+
+.planner-results__hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
   color: var(--text-muted);
 }
 

@@ -88,20 +88,58 @@
           </div>
           <div class="hero__actions">
             <a class="btn btn--primary" href="#ai-planner">开始 AI 规划</a>
-            <a class="btn btn--secondary" href="#timeline">查看经典攻略</a>
+            <a class="btn btn--secondary" href="#classic-guide">查看经典攻略</a>
             <button type="button" class="btn btn--ghost" id="btnExpandAll">展开全部行程</button>
           </div>
         </div>
       </section>
 
+
+      <nav class="page-toc page-toc--sticky" id="pageToc" aria-label="页内导航">
+        <div class="page-toc__groups">
+          <div class="page-toc__group">
+            <span class="page-toc__group-label">我的行程</span>
+            <ul class="page-toc__list">
+              <li><a class="page-toc__link" href="#ai-planner" data-toc>AI 规划</a></li>
+              <li><a class="page-toc__link" href="#plannerResults" data-toc id="tocPlannerResults" hidden>生成结果</a></li>
+            </ul>
+          </div>
+          <div class="page-toc__group">
+            <span class="page-toc__group-label">经典攻略</span>
+            <ul class="page-toc__list">
+              <li><a class="page-toc__link" href="#overview" data-toc>总览</a></li>
+              <li><a class="page-toc__link" href="#prep" data-toc>准备</a></li>
+              <li><a class="page-toc__link" href="#timeline" data-toc>时间线</a></li>
+              <li><a class="page-toc__link" href="#route" data-toc>路线</a></li>
+              <li><a class="page-toc__link" href="#food" data-toc>美食</a></li>
+              <li><a class="page-toc__link" href="#tips" data-toc>避坑</a></li>
+              <li><a class="page-toc__link" href="#summary" data-toc>总结</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <aside class="planner-pinned" id="plannerPinned" hidden aria-label="当前选定方案">
+        <div class="planner-pinned__inner">
+          <p class="planner-pinned__label">当前选定方案</p>
+          <p class="planner-pinned__title" id="plannerPinnedTitle">—</p>
+          <p class="planner-pinned__meta" id="plannerPinnedMeta">—</p>
+          <div class="planner-pinned__actions">
+            <a class="btn btn--primary btn--sm" href="#plannerDetail">查看详情</a>
+            <a class="btn btn--outline btn--sm" href="#classic-guide">对照经典攻略</a>
+          </div>
+        </div>
+      </aside>
+
       <section class="section section--planner" id="ai-planner" aria-labelledby="aiPlannerTitle">
         <div class="section__head">
           <h2 class="section__title" id="aiPlannerTitle">AI 行程规划助手</h2>
-          <p class="section__lede">填写约束条件，生成保守版 / 经典版 / 高效版三套可执行行程，并自动校验风险、支持导出。</p>
+          <p class="section__lede">根据你的预算与偏好生成 3 套可执行方案；下方「经典攻略」为博主默认 6 日路线，可对照使用。</p>
         </div>
 
         <form class="planner-form" id="plannerForm" novalidate>
-          <div class="planner-form__grid">
+          <p class="planner-form__intro">先填核心条件即可生成；更多偏好可展开「高级选项」。</p>
+          <div class="planner-form__grid planner-form__grid--basic">
             <label class="planner-field">
               <span class="planner-field__label">出行天数</span>
               <select name="days" required>
@@ -115,10 +153,11 @@
               <input type="number" name="budget" min="2000" max="20000" step="100" value="5000" required />
             </label>
             <label class="planner-field">
-              <span class="planner-field__label">是否第一次去台湾</span>
-              <select name="firstTime">
-                <option value="true" selected>是</option>
-                <option value="false">否</option>
+              <span class="planner-field__label">体力偏好</span>
+              <select name="stamina">
+                <option value="easy">轻松</option>
+                <option value="balanced" selected>平衡</option>
+                <option value="intense">高强度</option>
               </select>
             </label>
             <label class="planner-field">
@@ -129,52 +168,6 @@
                 <option value="couple">情侣</option>
                 <option value="family">家庭</option>
               </select>
-            </label>
-            <label class="planner-field">
-              <span class="planner-field__label">体力偏好</span>
-              <select name="stamina">
-                <option value="easy">轻松</option>
-                <option value="balanced" selected>平衡</option>
-                <option value="intense">高强度</option>
-              </select>
-            </label>
-            <label class="planner-field">
-              <span class="planner-field__label">住宿偏好</span>
-              <select name="lodging">
-                <option value="any" selected>无明确要求</option>
-                <option value="hostel">青旅</option>
-                <option value="hotel">酒店</option>
-                <option value="homestay">民宿</option>
-              </select>
-            </label>
-            <label class="planner-field">
-              <span class="planner-field__label">是否接受早起</span>
-              <select name="earlyBird">
-                <option value="true" selected>可以（含阿里山日出）</option>
-                <option value="false">不想早起</option>
-              </select>
-            </label>
-            <label class="planner-field">
-              <span class="planner-field__label">是否接受频繁换乘</span>
-              <select name="acceptTransfer">
-                <option value="false" selected>尽量少换乘</option>
-                <option value="true">可以接受</option>
-              </select>
-            </label>
-            <label class="planner-field">
-              <span class="planner-field__label">是否有购物需求</span>
-              <select name="shopping">
-                <option value="true" selected>有（含桃园 Outlet）</option>
-                <option value="false">无</option>
-              </select>
-            </label>
-            <label class="planner-field planner-field--full">
-              <span class="planner-field__label">必去景点（逗号分隔，可选）</span>
-              <input type="text" name="mustVisit" placeholder="例：渔人码头, 九份老街" />
-            </label>
-            <label class="planner-field planner-field--full">
-              <span class="planner-field__label">饮食忌口（可选）</span>
-              <input type="text" name="diet" placeholder="例：不吃牛、海鲜过敏" />
             </label>
           </div>
 
@@ -191,11 +184,65 @@
             </div>
           </fieldset>
 
+          <details class="planner-form__advanced">
+            <summary>高级选项（可选）</summary>
+            <div class="planner-form__grid">
+              <label class="planner-field">
+                <span class="planner-field__label">是否第一次去台湾</span>
+                <select name="firstTime">
+                  <option value="true" selected>是</option>
+                  <option value="false">否</option>
+                </select>
+              </label>
+              <label class="planner-field">
+                <span class="planner-field__label">住宿偏好</span>
+                <select name="lodging">
+                  <option value="any" selected>无明确要求</option>
+                  <option value="hostel">青旅</option>
+                  <option value="hotel">酒店</option>
+                  <option value="homestay">民宿</option>
+                </select>
+              </label>
+              <label class="planner-field">
+                <span class="planner-field__label">是否接受早起</span>
+                <select name="earlyBird">
+                  <option value="true" selected>可以（含阿里山日出）</option>
+                  <option value="false">不想早起</option>
+                </select>
+              </label>
+              <label class="planner-field">
+                <span class="planner-field__label">是否接受频繁换乘</span>
+                <select name="acceptTransfer">
+                  <option value="false" selected>尽量少换乘</option>
+                  <option value="true">可以接受</option>
+                </select>
+              </label>
+              <label class="planner-field">
+                <span class="planner-field__label">是否有购物需求</span>
+                <select name="shopping">
+                  <option value="true" selected>有（含桃园 Outlet）</option>
+                  <option value="false">无</option>
+                </select>
+              </label>
+              <label class="planner-field planner-field--full">
+                <span class="planner-field__label">必去景点（逗号分隔）</span>
+                <input type="text" name="mustVisit" placeholder="例：渔人码头, 九份老街" />
+              </label>
+              <label class="planner-field planner-field--full">
+                <span class="planner-field__label">饮食忌口</span>
+                <input type="text" name="diet" placeholder="例：不吃牛、海鲜过敏" />
+              </label>
+            </div>
+          </details>
+
           <div class="planner-form__actions">
             <button type="submit" class="btn btn--primary">生成 3 套行程方案</button>
-            <p class="planner-form__note">MVP 使用知识库 + 规则引擎生成；接入 LLM 后可替换 <code>TripPlanner</code> 实现。</p>
           </div>
         </form>
+
+                <div class="planner-relationship" id="plannerRelationship" hidden>
+          <p><strong>说明：</strong>以下为你生成的个性化方案，与下方「经典攻略」可对照使用；选定一套后可在页顶查看摘要。</p>
+        </div>
 
         <p class="planner-toast" id="plannerToast" role="status" aria-live="polite"></p>
         <div id="plannerResults" class="planner-results" hidden></div>
@@ -234,19 +281,11 @@
           </div>
         </div>
       </dialog>
-
-
-      <nav class="page-toc" aria-label="页内导航">
-        <ul class="page-toc__list">
-          <li><a class="page-toc__link" href="#ai-planner">AI 规划</a></li>
-          <li><a class="page-toc__link" href="#overview">总览</a></li>
-          <li><a class="page-toc__link" href="#prep">准备</a></li>
-          <li><a class="page-toc__link" href="#timeline">时间线</a></li>
-          <li><a class="page-toc__link" href="#route">路线</a></li>
-          <li><a class="page-toc__link" href="#tips">避坑</a></li>
-          <li><a class="page-toc__link" href="#summary">总结</a></li>
-        </ul>
-      </nav>
+<div class="classic-guide" id="classic-guide">
+        <div class="classic-guide__intro">
+          <h2 class="classic-guide__title">经典攻略参考</h2>
+          <p>以下为博主默认 <strong>6 天 5 晚</strong> 行程，与上方 AI 生成方案<strong>相互独立</strong>。建议：先选定 AI 方案并导出，再对照本区查漏补缺。</p>
+        </div>
 
       <!-- 2. 总览 -->
       <section class="section section--tight" id="overview" aria-labelledby="overviewTitle">
@@ -477,15 +516,14 @@
       <section class="section" id="timeline" aria-labelledby="timelineTitle">
         <div class="section__head">
           <h2 class="section__title" id="timelineTitle">每日时间线</h2>
-          <p class="section__lede">点击一天展开详情，与下方「路线一览」节点联动。</p>
+          <p class="section__lede">点击一天展开详情；含<strong>预订</strong>与<strong>风险</strong>提示，可一键打开 Google Maps。</p>
         </div>
         <div class="timeline" data-timeline>
-          <article class="day-card" data-day="1" data-route-index="0">
-            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-1" id="day-btn-1">
-              <span class="day-card__badge">Day 1</span>
-              <span class="day-card__meta">台北 · 西门町 、夜爬象山</span>
-              <span class="day-card__chevron" aria-hidden="true"></span>
+          <article class="day-card" data-day="1" data-route-index="0" data-book-ahead="false">
+            <div class="day-card__head-row"><button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-1" id="day-btn-1"><span class="day-card__badge">Day 1</span><span class="day-card__tags"><span class="day-flag day-flag--tip">落地准备</span></span><span class="day-card__meta">台北 · 西门町 、夜爬象山</span><span class="day-card__chevron" aria-hidden="true"></span>
             </button>
+              <a class="day-card__map-link" href="https://www.google.com/maps/search/?api=1&hl=zh-CN&query=%E5%8F%B0%E5%8C%97%E8%BB%8A%E7%AB%99" target="_blank" rel="noopener noreferrer">地图</a>
+            </div>
             <div class="day-card__thumb-wrap">
               <img class="day-card__thumb" src="./assets/images/台北车站.JPG" alt="Day1 台北车站" width="1200" height="800" loading="lazy" />
             </div>
@@ -528,12 +566,11 @@
             </div>
           </article>
 
-          <article class="day-card" data-day="2" data-route-index="1">
-            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-2" id="day-btn-2">
-              <span class="day-card__badge">Day 2</span>
-              <span class="day-card__meta">淡水 · 渔人码头 、老街</span>
-              <span class="day-card__chevron" aria-hidden="true"></span>
+          <article class="day-card" data-day="2" data-route-index="1" data-book-ahead="false">
+            <div class="day-card__head-row"><button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-2" id="day-btn-2"><span class="day-card__badge">Day 2</span><span class="day-card__meta">淡水 · 渔人码头 、老街</span><span class="day-card__chevron" aria-hidden="true"></span>
             </button>
+              <a class="day-card__map-link" href="https://www.google.com/maps/search/?api=1&hl=zh-CN&query=%E6%B7%A1%E6%B0%B4%E6%BC%94%E4%BA%BA%E7%A2%BC%E9%A0%AD" target="_blank" rel="noopener noreferrer">地图</a>
+            </div>
             <div class="day-card__thumb-wrap">
               <img class="day-card__thumb" src="./assets/images/渔人码头.jpg" alt="Day2 渔人码头" width="1200" height="800" loading="lazy" />
             </div>
@@ -567,12 +604,11 @@
             </div>
           </article>
 
-          <article class="day-card" data-day="3" data-route-index="2">
-            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-3" id="day-btn-3">
-              <span class="day-card__badge">Day 3</span>
-              <span class="day-card__meta">国立故宫 、九份老街</span>
-              <span class="day-card__chevron" aria-hidden="true"></span>
+          <article class="day-card" data-day="3" data-route-index="2" data-book-ahead="true">
+            <div class="day-card__head-row"><button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-3" id="day-btn-3"><span class="day-card__badge">Day 3</span><span class="day-card__tags"><span class="day-flag day-flag--book">需预订</span><span class="day-flag day-flag--risk">末班车风险</span></span><span class="day-card__meta">国立故宫 、九份老街</span><span class="day-card__chevron" aria-hidden="true"></span>
             </button>
+              <a class="day-card__map-link" href="https://www.google.com/maps/search/?api=1&hl=zh-CN&query=%E5%9B%BD%E7%AB%8B%E6%95%85%E5%AE%AE%E5%8D%9A%E7%89%A9%E9%A2%86" target="_blank" rel="noopener noreferrer">地图</a>
+            </div>
             <div class="day-card__thumb-wrap">
               <img class="day-card__thumb" src="./assets/images/九份老街1.jpg" alt="Day3 九份老街" width="1200" height="800" loading="lazy" />
             </div>
@@ -611,12 +647,11 @@
             </div>
           </article>
 
-          <article class="day-card" data-day="4" data-route-index="3">
-            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-4" id="day-btn-4">
-              <span class="day-card__badge">Day 4</span>
-              <span class="day-card__meta">日月潭</span>
-              <span class="day-card__chevron" aria-hidden="true"></span>
+          <article class="day-card" data-day="4" data-route-index="3" data-book-ahead="true">
+            <div class="day-card__head-row"><button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-4" id="day-btn-4"><span class="day-card__badge">Day 4</span><span class="day-card__tags"><span class="day-flag day-flag--move">跨城日</span><span class="day-flag day-flag--book">需预订</span></span><span class="day-card__meta">日月潭</span><span class="day-card__chevron" aria-hidden="true"></span>
             </button>
+              <a class="day-card__map-link" href="https://www.google.com/maps/search/?api=1&hl=zh-CN&query=%E6%97%A5%E6%9C%88%E6%BD%AD" target="_blank" rel="noopener noreferrer">地图</a>
+            </div>
             <div class="day-card__thumb-wrap">
               <img class="day-card__thumb" src="./assets/images/日月潭1.jpg" alt="Day4 日月潭" width="1200" height="800" loading="lazy" />
             </div>
@@ -653,12 +688,11 @@
             </div>
           </article>
 
-          <article class="day-card" data-day="5" data-route-index="4">
-            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-5" id="day-btn-5">
-              <span class="day-card__badge">Day 5</span>
-              <span class="day-card__meta">阿里山 · 小火车 、萤火虫 、星空</span>
-              <span class="day-card__chevron" aria-hidden="true"></span>
+          <article class="day-card" data-day="5" data-route-index="4" data-book-ahead="true">
+            <div class="day-card__head-row"><button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-5" id="day-btn-5"><span class="day-card__badge">Day 5</span><span class="day-card__tags"><span class="day-flag day-flag--book">需预订</span><span class="day-flag day-flag--risk">高风险</span></span><span class="day-card__meta">阿里山 · 小火车 、萤火虫 、星空</span><span class="day-card__chevron" aria-hidden="true"></span>
             </button>
+              <a class="day-card__map-link" href="https://www.google.com/maps/search/?api=1&hl=zh-CN&query=%E9%98%BF%E9%87%8C%E5%B1%B1%E5%9C%8B%E5%AE%B6%E6%A3%AE%E6%9E%97%E9%81%93" target="_blank" rel="noopener noreferrer">地图</a>
+            </div>
             <div class="day-card__thumb-wrap">
               <img class="day-card__thumb" src="./assets/images/阿里山4.jpg" alt="Day5 阿里山" width="1200" height="800" loading="lazy" />
             </div>
@@ -697,12 +731,11 @@
             </div>
           </article>
 
-          <article class="day-card" data-day="6" data-route-index="5">
-            <button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-6" id="day-btn-6">
-              <span class="day-card__badge">Day 6</span>
-              <span class="day-card__meta">日出 、桃园 · 购物小镇 、机场免税</span>
-              <span class="day-card__chevron" aria-hidden="true"></span>
+          <article class="day-card" data-day="6" data-route-index="5" data-book-ahead="false">
+            <div class="day-card__head-row"><button type="button" class="day-card__header" aria-expanded="false" aria-controls="day-panel-6" id="day-btn-6"><span class="day-card__badge">Day 6</span><span class="day-card__tags"><span class="day-flag day-flag--tip">返程</span></span><span class="day-card__meta">日出 、桃园 · 购物小镇 、机场免税</span><span class="day-card__chevron" aria-hidden="true"></span>
             </button>
+              <a class="day-card__map-link" href="https://www.google.com/maps/search/?api=1&hl=zh-CN&query=%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4" target="_blank" rel="noopener noreferrer">地图</a>
+            </div>
             <div class="day-card__thumb-wrap">
               <img class="day-card__thumb" src="./assets/images/阿里山3.jpg" alt="Day6 阿里山日出与返程" width="1200" height="800" loading="lazy" />
             </div>
@@ -742,14 +775,17 @@
       <section class="section" id="route" aria-labelledby="routeTitle">
         <div class="section__head">
           <h2 class="section__title" id="routeTitle">路线一览</h2>
-          <p class="section__lede">城市顺序与正文一致；节点对应 Day1–Day6。下方为 Google 地图概览（iframe 嵌入），完整导航请用外链打开。</p>
+          <p class="section__lede">点击节点将<strong>跳转当日行程</strong>并更新下方 Google Maps <strong>外链</strong>（嵌入地图不会随节点变化）。</p>
+        </div>
+        <div class="route-map__callout" role="note">
+          <p><strong>关于节点「九份」：</strong>行程正文为九份老街，Google 导航关键词已校正为<strong>台北车站</strong>（住宿/转乘枢纽）。去九份请用「在 Google Maps 中打开完整路线」或 Day3 卡片中的地图按钮。</p>
         </div>
         <div class="route-map" data-route-map aria-label="行程城市顺序">
           <div class="route-map__track" aria-hidden="true"></div>
           <ol class="route-map__nodes">
             <li><button type="button" class="route-node is-active" data-route-index="0" aria-current="true">台北</button></li>
             <li><button type="button" class="route-node" data-route-index="1">淡水</button></li>
-            <li><button type="button" class="route-node" data-route-index="2" data-maps-place="台北车站">九份</button></li>
+            <li><button type="button" class="route-node route-node--hub" data-route-index="2" data-maps-place="台北车站" title="行程为九份；地图定位台北车站（枢纽）">九份<span class="route-node__hint">枢纽</span></button></li>
             <li><button type="button" class="route-node" data-route-index="3">日月潭</button></li>
             <li><button type="button" class="route-node" data-route-index="4">阿里山</button></li>
             <li><button type="button" class="route-node" data-route-index="5">桃园</button></li>
@@ -771,8 +807,8 @@
             allowfullscreen
           ></iframe>
     
-          <p class="route-map__embed-note">
-            嵌入地图为行程概览；iframe 内无法与上方节点按钮联动。节点「九份」在 Google 中定位已校正为<strong>台北车站</strong>（行程正文仍含九份）。交通与班次以 Google Maps 现场信息为准。
+          <p class="route-map__embed-note" id="routeHint" role="status" aria-live="polite">
+            嵌入地图为行程概览，<strong>不会</strong>随上方节点切换而变化；点击节点会跳转到对应 Day 并更新下方「在 Google Maps 中打开」外链。
           </p>
           <div class="route-map__embed-actions">
             <a
@@ -938,6 +974,7 @@
           <p class="summary-note" id="toastArea" role="status" aria-live="polite"></p>
         </div>
       </section>
+      </div>
     </main>
 
     <footer class="site-footer">

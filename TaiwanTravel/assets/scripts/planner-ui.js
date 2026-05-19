@@ -82,6 +82,31 @@
     return null;
   }
 
+  function updatePinnedBar(plan) {
+    var bar = $("#plannerPinned");
+    if (!bar || !plan) return;
+    bar.hidden = false;
+    var title = $("#plannerPinnedTitle");
+    var meta = $("#plannerPinnedMeta");
+    var v = plan.validation || {};
+    if (title) title.textContent = plan.name + " · " + plan.tagline;
+    if (meta) {
+      meta.textContent =
+        "预估约 " +
+        (v.totalBudget || 0) +
+        " RMB/人 · 风险项 " +
+        (v.risks ? v.risks.length : 0) +
+        " 条（与下方经典攻略可对照）";
+    }
+  }
+
+  function showPlannerMetaUi() {
+    var rel = $("#plannerRelationship");
+    var tocRes = $("#tocPlannerResults");
+    if (rel) rel.hidden = false;
+    if (tocRes) tocRes.hidden = false;
+  }
+
   function renderCards() {
     var wrap = $("#plannerResults");
     if (!wrap) return;
@@ -112,7 +137,7 @@
         '">\u4e3a\u4ec0\u4e48\u9009\u8fd9\u7248</button></div></article>';
     });
     wrap.innerHTML =
-      '<div class="planner-results__head"><h3>\u4e3a\u4f60\u751f\u6210 3 \u5957\u65b9\u6848</h3><p class="planner-results__hint">\u7ed3\u6784\u5316\u7ea6\u675f + \u89c4\u5219\u5f15\u64ce\uff08MVP\uff0c\u53ef\u63a5\u5165 LLM\uff09</p></div><div class="plan-cards">' +
+      '<div class="planner-results__head"><h3>\u4e3a\u4f60\u751f\u6210 3 \u5957\u65b9\u6848</h3><p class="planner-results__hint">\u8bf7\u9009\u62e9\u4e00\u5957\u67e5\u770b\u8be6\u60c5\u3002\u4e0e\u4e0b\u65b9\u300c\u7ecf\u5178\u653b\u7565\u300d\u76f8\u4e92\u72ec\u7acb\uff0c\u53ef\u5bf9\u7167\u4f7f\u7528\u3002</p></div><div class="plan-cards">' +
       html +
       "</div>";
   }
@@ -212,7 +237,7 @@
       renderRisks(p) +
       "</section><section class=\"planner-detail__days\">" +
       (p.days || []).map(renderDay).join("") +
-      '</section><div class="planner-detail__toolbar"><button type="button" class="btn btn--secondary" id="btnReplan">\u91cd\u65b0\u89c4\u5212</button><button type="button" class="btn btn--outline" data-export="xiaohongshu">\u5bfc\u51fa\u5c0f\u7ea2\u4e66</button><button type="button" class="btn btn--outline" data-export="checklist">\u5bfc\u51fa\u6e05\u5355</button><button type="button" class="btn btn--outline"       data-export="timeline">\u5bfc\u51fa\u65f6\u95f4\u8f74</button></div>';
+      '</section><p class="planner-relationship planner-relationship--inline"><strong>\u63d0\u793a\uff1a</strong>\u672c\u65b9\u6848\u6839\u636e\u4f60\u7684\u6761\u4ef6\u751f\u6210\uff1b\u4e0b\u65b9\u7ecf\u5178\u653b\u7565\u4e3a\u9ed8\u8ba4\u8def\u7ebf\uff0c\u4e8c\u8005\u53ef\u5bf9\u7167\uff0c\u4e0d\u4f1a\u81ea\u52a8\u540c\u6b65\u3002</p><div class="planner-detail__toolbar"><button type="button" class="btn btn--secondary" id="btnReplan">\u91cd\u65b0\u89c4\u5212</button><button type="button" class="btn btn--outline" data-export="xiaohongshu">\u5bfc\u51fa\u5c0f\u7ea2\u4e66</button><button type="button" class="btn btn--outline" data-export="checklist">\u5bfc\u51fa\u6e05\u5355</button><button type="button" class="btn btn--outline" data-export="timeline">\u5bfc\u51fa\u65f6\u95f4\u8f74</button></div>';
 
     $$(".day-plan__why", el).forEach(function (btn) {
       btn.onclick = function () {
@@ -245,6 +270,7 @@
         $("#plannerExportDialog").hidden = false;
       };
     });
+    updatePinnedBar(p);
     el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -252,10 +278,14 @@
     state.userInput = readForm();
     state.plans = TripPlanner.generatePlans(state.userInput);
     renderCards();
+    showPlannerMetaUi();
     var d = $("#plannerDetail");
     if (d) d.hidden = true;
+    var bar = $("#plannerPinned");
+    if (bar) bar.hidden = true;
     toast(MSG.generated);
-    $("#plannerResults").scrollIntoView({ behavior: "smooth" });
+    var res = $("#plannerResults");
+    if (res) res.scrollIntoView({ behavior: "smooth" });
   }
 
   function replan() {
@@ -296,6 +326,7 @@
           if (p) {
             state.activePlan = p;
             renderDetail(p);
+            updatePinnedBar(p);
           }
         }
         if (w) {
